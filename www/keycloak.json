@@ -1,0 +1,11 @@
+{
+	"realm" : "ponytest",
+	"auth-server-url" : "https://sso.ponytest.com:8443/auth",
+	"ssl-required" : "external",
+	"resource" : "ilab-report-x",
+	"credentials": {
+		"secret": "18e9567b-eaf8-4a8e-8478-d59b949a4d1a"
+
+	},
+	"public-client" : true
+}

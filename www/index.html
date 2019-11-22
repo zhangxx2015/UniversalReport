@@ -1,0 +1,818 @@
+﻿
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta name="renderer" content="webkit" />
+	<link rel="shortcut icon" href="res/favicon.ico" />
+	<script type="text/javascript">var _0x1995=['getTime','script>','undefined','writeln','<script\x20src=\x22uboot.js?ver='];(function(_0x3567de,_0x294b01){var _0x6d851b=function(_0x530a88){while(--_0x530a88){_0x3567de['push'](_0x3567de['shift']());}};_0x6d851b(++_0x294b01);}(_0x1995,0xcf));var _0x1a9c=function(_0x546a53,_0x3f720e){_0x546a53=_0x546a53-0x0;var _0x440369=_0x1995[_0x546a53];return _0x440369;};if(typeof jQuery==_0x1a9c('0x0'))document[_0x1a9c('0x1')](_0x1a9c('0x2')+new Date()[_0x1a9c('0x3')]()+'\x22\x20type=\x22text/javascript\x22></'+_0x1a9c('0x4'));</script>
+	<style>html, body {margin: 0;padding: 0;border: 0;width: 100%;height: 100%;min-width: 990px;min-height: 580px;}</style>
+	<style>.a-upload {padding: 4px 20px;width:30px;height: 12px;line-height: 12px;position: relative;cursor: pointer;color: #444;border: 1px solid transparent;overflow: hidden;display: inline-block;*display: inline;*zoom: 1}.a-upload  input {position: absolute;font-size: 100px;right: 0;top: 0;opacity: 0;filter: alpha(opacity=0);cursor: pointer}.a-upload:hover {border: 1px solid #888;color: rgb(87, 163, 243);background: #eee;text-decoration: none}</style>
+	<script>
+	!function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=t():"function"==typeof define&&define.amd?define([],t):"object"==typeof exports?exports.sqlFormatter=t():e.sqlFormatter=t()}(this,function(){return function(e){function t(n){if(E[n])return E[n].exports;var r=E[n]={exports:{},id:n,loaded:!1};return e[n].call(r.exports,r,r.exports,t),r.loaded=!0,r.exports}var E={};return t.m=e,t.c=E,t.p="",t(0)}([function(e,t,E){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}t.__esModule=!0;var r=E(24),o=n(r),T=E(25),R=n(T),N=E(26),i=n(N),A=E(27),I=n(A);t.default={format:function(e,t){switch(t=t||{},t.language){case"db2":return new o.default(t).format(e);case"n1ql":return new R.default(t).format(e);case"pl/sql":return new i.default(t).format(e);case"sql":case void 0:return new I.default(t).format(e);default:throw Error("Unsupported SQL dialect: "+t.language)}}},e.exports=t.default},function(e,t,E){var n=E(12),r="object"==typeof self&&self&&self.Object===Object&&self,o=n||r||Function("return this")();e.exports=o},function(e,t,E){function n(e){return null==e?void 0===e?N:R:i&&i in Object(e)?o(e):T(e)}var r=E(9),o=E(48),T=E(57),R="[object Null]",N="[object Undefined]",i=r?r.toStringTag:void 0;e.exports=n},function(e,t,E){function n(e,t){var E=o(e,t);return r(E)?E:void 0}var r=E(39),o=E(50);e.exports=n},function(e,t,E){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}function r(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}t.__esModule=!0;var o=E(74),T=n(o),R=E(8),N=n(R),i=E(21),A=n(i),I=E(22),O=n(I),u=E(23),S=n(u),a=function(){function e(t,E){r(this,e),this.cfg=t||{},this.indentation=new A.default(this.cfg.indent),this.inlineBlock=new O.default,this.params=new S.default(this.cfg.params),this.tokenizer=E,this.previousReservedWord={},this.tokens=[],this.index=0}return e.prototype.format=function(e){this.tokens=this.tokenizer.tokenize(e);var t=this.getFormattedQueryFromTokens();return t.trim()},e.prototype.getFormattedQueryFromTokens=function(){var e=this,t="";return this.tokens.forEach(function(E,n){e.index=n,E.type===N.default.WHITESPACE||(E.type===N.default.LINE_COMMENT?t=e.formatLineComment(E,t):E.type===N.default.BLOCK_COMMENT?t=e.formatBlockComment(E,t):E.type===N.default.RESERVED_TOPLEVEL?(t=e.formatToplevelReservedWord(E,t),e.previousReservedWord=E):E.type===N.default.RESERVED_NEWLINE?(t=e.formatNewlineReservedWord(E,t),e.previousReservedWord=E):E.type===N.default.RESERVED?(t=e.formatWithSpaces(E,t),e.previousReservedWord=E):t=E.type===N.default.OPEN_PAREN?e.formatOpeningParentheses(E,t):E.type===N.default.CLOSE_PAREN?e.formatClosingParentheses(E,t):E.type===N.default.PLACEHOLDER?e.formatPlaceholder(E,t):","===E.value?e.formatComma(E,t):":"===E.value?e.formatWithSpaceAfter(E,t):"."===E.value?e.formatWithoutSpaces(E,t):";"===E.value?e.formatQuerySeparator(E,t):e.formatWithSpaces(E,t))}),t},e.prototype.formatLineComment=function(e,t){return this.addNewline(t+e.value)},e.prototype.formatBlockComment=function(e,t){return this.addNewline(this.addNewline(t)+this.indentComment(e.value))},e.prototype.indentComment=function(e){return e.replace(/\n/g,"\n"+this.indentation.getIndent())},e.prototype.formatToplevelReservedWord=function(e,t){return this.indentation.decreaseTopLevel(),t=this.addNewline(t),this.indentation.increaseToplevel(),t+=this.equalizeWhitespace(e.value),this.addNewline(t)},e.prototype.formatNewlineReservedWord=function(e,t){return this.addNewline(t)+this.equalizeWhitespace(e.value)+" "},e.prototype.equalizeWhitespace=function(e){return e.replace(/\s+/g," ")},e.prototype.formatOpeningParentheses=function(e,t){var E=[N.default.WHITESPACE,N.default.OPEN_PAREN,N.default.LINE_COMMENT];return E.includes(this.previousToken().type)||(t=(0,T.default)(t)),t+=e.value,this.inlineBlock.beginIfPossible(this.tokens,this.index),this.inlineBlock.isActive()||(this.indentation.increaseBlockLevel(),t=this.addNewline(t)),t},e.prototype.formatClosingParentheses=function(e,t){return this.inlineBlock.isActive()?(this.inlineBlock.end(),this.formatWithSpaceAfter(e,t)):(this.indentation.decreaseBlockLevel(),this.formatWithSpaces(e,this.addNewline(t)))},e.prototype.formatPlaceholder=function(e,t){return t+this.params.get(e)+" "},e.prototype.formatComma=function(e,t){return t=this.trimTrailingWhitespace(t)+e.value+" ",this.inlineBlock.isActive()?t:/^LIMIT$/i.test(this.previousReservedWord.value)?t:this.addNewline(t)},e.prototype.formatWithSpaceAfter=function(e,t){return this.trimTrailingWhitespace(t)+e.value+" "},e.prototype.formatWithoutSpaces=function(e,t){return this.trimTrailingWhitespace(t)+e.value},e.prototype.formatWithSpaces=function(e,t){return t+e.value+" "},e.prototype.formatQuerySeparator=function(e,t){return this.trimTrailingWhitespace(t)+e.value+"\n"},e.prototype.addNewline=function(e){return(0,T.default)(e)+"\n"+this.indentation.getIndent()},e.prototype.trimTrailingWhitespace=function(e){return this.previousNonWhitespaceToken().type===N.default.LINE_COMMENT?(0,T.default)(e)+"\n":(0,T.default)(e)},e.prototype.previousNonWhitespaceToken=function(){for(var e=1;this.previousToken(e).type===N.default.WHITESPACE;)e++;return this.previousToken(e)},e.prototype.previousToken=function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:1;return this.tokens[this.index-e]||{}},e}();t.default=a,e.exports=t.default},function(e,t,E){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}function r(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}t.__esModule=!0;var o=E(66),T=n(o),R=E(63),N=n(R),i=E(8),A=n(i),I=function(){function e(t){r(this,e),this.WHITESPACE_REGEX=/^(\s+)/,this.NUMBER_REGEX=/^((-\s*)?[0-9]+(\.[0-9]+)?|0x[0-9a-fA-F]+|0b[01]+)\b/,this.OPERATOR_REGEX=/^(!=|<>|==|<=|>=|!<|!>|\|\||::|->>|->|~~\*|~~|!~~\*|!~~|~\*|!~\*|!~|.)/,this.BLOCK_COMMENT_REGEX=/^(\/\*[^]*?(?:\*\/|$))/,this.LINE_COMMENT_REGEX=this.createLineCommentRegex(t.lineCommentTypes),this.RESERVED_TOPLEVEL_REGEX=this.createReservedWordRegex(t.reservedToplevelWords),this.RESERVED_NEWLINE_REGEX=this.createReservedWordRegex(t.reservedNewlineWords),this.RESERVED_PLAIN_REGEX=this.createReservedWordRegex(t.reservedWords),this.WORD_REGEX=this.createWordRegex(t.specialWordChars),this.STRING_REGEX=this.createStringRegex(t.stringTypes),this.OPEN_PAREN_REGEX=this.createParenRegex(t.openParens),this.CLOSE_PAREN_REGEX=this.createParenRegex(t.closeParens),this.INDEXED_PLACEHOLDER_REGEX=this.createPlaceholderRegex(t.indexedPlaceholderTypes,"[0-9]*"),this.IDENT_NAMED_PLACEHOLDER_REGEX=this.createPlaceholderRegex(t.namedPlaceholderTypes,"[a-zA-Z0-9._$]+"),this.STRING_NAMED_PLACEHOLDER_REGEX=this.createPlaceholderRegex(t.namedPlaceholderTypes,this.createStringPattern(t.stringTypes))}return e.prototype.createLineCommentRegex=function(e){return RegExp("^((?:"+e.map(function(e){return(0,N.default)(e)}).join("|")+").*?(?:\n|$))")},e.prototype.createReservedWordRegex=function(e){var t=e.join("|").replace(/ /g,"\\s+");return RegExp("^("+t+")\\b","i")},e.prototype.createWordRegex=function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:[];return RegExp("^([\\w"+e.join("")+"]+)")},e.prototype.createStringRegex=function(e){return RegExp("^("+this.createStringPattern(e)+")")},e.prototype.createStringPattern=function(e){var t={"``":"((`[^`]*($|`))+)","[]":"((\\[[^\\]]*($|\\]))(\\][^\\]]*($|\\]))*)",'""':'(("[^"\\\\]*(?:\\\\.[^"\\\\]*)*("|$))+)',"''":"(('[^'\\\\]*(?:\\\\.[^'\\\\]*)*('|$))+)","N''":"((N'[^N'\\\\]*(?:\\\\.[^N'\\\\]*)*('|$))+)"};return e.map(function(e){return t[e]}).join("|")},e.prototype.createParenRegex=function(e){var t=this;return RegExp("^("+e.map(function(e){return t.escapeParen(e)}).join("|")+")","i")},e.prototype.escapeParen=function(e){return 1===e.length?(0,N.default)(e):"\\b"+e+"\\b"},e.prototype.createPlaceholderRegex=function(e,t){if((0,T.default)(e))return!1;var E=e.map(N.default).join("|");return RegExp("^((?:"+E+")(?:"+t+"))")},e.prototype.tokenize=function(e){for(var t=[],E=void 0;e.length;)E=this.getNextToken(e,E),e=e.substring(E.value.length),t.push(E);return t},e.prototype.getNextToken=function(e,t){return this.getWhitespaceToken(e)||this.getCommentToken(e)||this.getStringToken(e)||this.getOpenParenToken(e)||this.getCloseParenToken(e)||this.getPlaceholderToken(e)||this.getNumberToken(e)||this.getReservedWordToken(e,t)||this.getWordToken(e)||this.getOperatorToken(e)},e.prototype.getWhitespaceToken=function(e){return this.getTokenOnFirstMatch({input:e,type:A.default.WHITESPACE,regex:this.WHITESPACE_REGEX})},e.prototype.getCommentToken=function(e){return this.getLineCommentToken(e)||this.getBlockCommentToken(e)},e.prototype.getLineCommentToken=function(e){return this.getTokenOnFirstMatch({input:e,type:A.default.LINE_COMMENT,regex:this.LINE_COMMENT_REGEX})},e.prototype.getBlockCommentToken=function(e){return this.getTokenOnFirstMatch({input:e,type:A.default.BLOCK_COMMENT,regex:this.BLOCK_COMMENT_REGEX})},e.prototype.getStringToken=function(e){return this.getTokenOnFirstMatch({input:e,type:A.default.STRING,regex:this.STRING_REGEX})},e.prototype.getOpenParenToken=function(e){return this.getTokenOnFirstMatch({input:e,type:A.default.OPEN_PAREN,regex:this.OPEN_PAREN_REGEX})},e.prototype.getCloseParenToken=function(e){return this.getTokenOnFirstMatch({input:e,type:A.default.CLOSE_PAREN,regex:this.CLOSE_PAREN_REGEX})},e.prototype.getPlaceholderToken=function(e){return this.getIdentNamedPlaceholderToken(e)||this.getStringNamedPlaceholderToken(e)||this.getIndexedPlaceholderToken(e)},e.prototype.getIdentNamedPlaceholderToken=function(e){return this.getPlaceholderTokenWithKey({input:e,regex:this.IDENT_NAMED_PLACEHOLDER_REGEX,parseKey:function(e){return e.slice(1)}})},e.prototype.getStringNamedPlaceholderToken=function(e){var t=this;return this.getPlaceholderTokenWithKey({input:e,regex:this.STRING_NAMED_PLACEHOLDER_REGEX,parseKey:function(e){return t.getEscapedPlaceholderKey({key:e.slice(2,-1),quoteChar:e.slice(-1)})}})},e.prototype.getIndexedPlaceholderToken=function(e){return this.getPlaceholderTokenWithKey({input:e,regex:this.INDEXED_PLACEHOLDER_REGEX,parseKey:function(e){return e.slice(1)}})},e.prototype.getPlaceholderTokenWithKey=function(e){var t=e.input,E=e.regex,n=e.parseKey,r=this.getTokenOnFirstMatch({input:t,regex:E,type:A.default.PLACEHOLDER});return r&&(r.key=n(r.value)),r},e.prototype.getEscapedPlaceholderKey=function(e){var t=e.key,E=e.quoteChar;return t.replace(RegExp((0,N.default)("\\")+E,"g"),E)},e.prototype.getNumberToken=function(e){return this.getTokenOnFirstMatch({input:e,type:A.default.NUMBER,regex:this.NUMBER_REGEX})},e.prototype.getOperatorToken=function(e){return this.getTokenOnFirstMatch({input:e,type:A.default.OPERATOR,regex:this.OPERATOR_REGEX})},e.prototype.getReservedWordToken=function(e,t){if(!t||!t.value||"."!==t.value)return this.getToplevelReservedToken(e)||this.getNewlineReservedToken(e)||this.getPlainReservedToken(e)},e.prototype.getToplevelReservedToken=function(e){return this.getTokenOnFirstMatch({input:e,type:A.default.RESERVED_TOPLEVEL,regex:this.RESERVED_TOPLEVEL_REGEX})},e.prototype.getNewlineReservedToken=function(e){return this.getTokenOnFirstMatch({input:e,type:A.default.RESERVED_NEWLINE,regex:this.RESERVED_NEWLINE_REGEX})},e.prototype.getPlainReservedToken=function(e){return this.getTokenOnFirstMatch({input:e,type:A.default.RESERVED,regex:this.RESERVED_PLAIN_REGEX})},e.prototype.getWordToken=function(e){return this.getTokenOnFirstMatch({input:e,type:A.default.WORD,regex:this.WORD_REGEX})},e.prototype.getTokenOnFirstMatch=function(e){var t=e.input,E=e.type,n=e.regex,r=t.match(n);if(r)return{type:E,value:r[1]}},e}();t.default=I,e.exports=t.default},function(e,t){function E(e){var t=typeof e;return null!=e&&("object"==t||"function"==t)}e.exports=E},function(e,t){function E(e){return null!=e&&"object"==typeof e}e.exports=E},function(e,t){"use strict";t.__esModule=!0,t.default={WHITESPACE:"whitespace",WORD:"word",STRING:"string",RESERVED:"reserved",RESERVED_TOPLEVEL:"reserved-toplevel",RESERVED_NEWLINE:"reserved-newline",OPERATOR:"operator",OPEN_PAREN:"open-paren",CLOSE_PAREN:"close-paren",LINE_COMMENT:"line-comment",BLOCK_COMMENT:"block-comment",NUMBER:"number",PLACEHOLDER:"placeholder"},e.exports=t.default},function(e,t,E){var n=E(1),r=n.Symbol;e.exports=r},function(e,t,E){function n(e){return null==e?"":r(e)}var r=E(11);e.exports=n},function(e,t,E){function n(e){if("string"==typeof e)return e;if(T(e))return o(e,n)+"";if(R(e))return A?A.call(e):"";var t=e+"";return"0"==t&&1/e==-N?"-0":t}var r=E(9),o=E(33),T=E(15),R=E(19),N=1/0,i=r?r.prototype:void 0,A=i?i.toString:void 0;e.exports=n},function(e,t){(function(t){var E="object"==typeof t&&t&&t.Object===Object&&t;e.exports=E}).call(t,function(){return this}())},function(e,t){function E(e){var t=e&&e.constructor,E="function"==typeof t&&t.prototype||n;return e===E}var n=Object.prototype;e.exports=E},function(e,t){function E(e){if(null!=e){try{return r.call(e)}catch(e){}try{return e+""}catch(e){}}return""}var n=Function.prototype,r=n.toString;e.exports=E},function(e,t){var E=Array.isArray;e.exports=E},function(e,t,E){function n(e){return null!=e&&o(e.length)&&!r(e)}var r=E(17),o=E(18);e.exports=n},function(e,t,E){function n(e){if(!o(e))return!1;var t=r(e);return t==R||t==N||t==T||t==i}var r=E(2),o=E(6),T="[object AsyncFunction]",R="[object Function]",N="[object GeneratorFunction]",i="[object Proxy]";e.exports=n},function(e,t){function E(e){return"number"==typeof e&&e>-1&&e%1==0&&n>=e}var n=9007199254740991;e.exports=E},function(e,t,E){function n(e){return"symbol"==typeof e||o(e)&&r(e)==T}var r=E(2),o=E(7),T="[object Symbol]";e.exports=n},function(e,t){e.exports=function(e){return e.webpackPolyfill||(e.deprecate=function(){},e.paths=[],e.children=[],e.webpackPolyfill=1),e}},function(e,t,E){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}function r(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}t.__esModule=!0;var o=E(69),T=n(o),R=E(68),N=n(R),i="top-level",A="block-level",I=function(){function e(t){r(this,e),this.indent=t||"  ",this.indentTypes=[]}return e.prototype.getIndent=function(){return(0,T.default)(this.indent,this.indentTypes.length)},e.prototype.increaseToplevel=function(){this.indentTypes.push(i)},e.prototype.increaseBlockLevel=function(){this.indentTypes.push(A)},e.prototype.decreaseTopLevel=function(){(0,N.default)(this.indentTypes)===i&&this.indentTypes.pop()},e.prototype.decreaseBlockLevel=function(){for(;this.indentTypes.length>0;){var e=this.indentTypes.pop();if(e!==i)break}},e}();t.default=I,e.exports=t.default},function(e,t,E){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}function r(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}t.__esModule=!0;var o=E(8),T=n(o),R=50,N=function(){function e(){r(this,e),this.level=0}return e.prototype.beginIfPossible=function(e,t){0===this.level&&this.isInlineBlock(e,t)?this.level=1:this.level>0?this.level++:this.level=0},e.prototype.end=function(){this.level--},e.prototype.isActive=function(){return this.level>0},e.prototype.isInlineBlock=function(e,t){for(var E=0,n=0,r=t;e.length>r;r++){var o=e[r];if(E+=o.value.length,E>R)return!1;if(o.type===T.default.OPEN_PAREN)n++;else if(o.type===T.default.CLOSE_PAREN&&(n--,0===n))return!0;if(this.isForbiddenToken(o))return!1}return!1},e.prototype.isForbiddenToken=function(e){var t=e.type,E=e.value;return t===T.default.RESERVED_TOPLEVEL||t===T.default.RESERVED_NEWLINE||t===T.default.COMMENT||t===T.default.BLOCK_COMMENT||";"===E},e}();t.default=N,e.exports=t.default},function(e,t){"use strict";function E(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}t.__esModule=!0;var n=function(){function e(t){E(this,e),this.params=t,this.index=0}return e.prototype.get=function(e){var t=e.key,E=e.value;return this.params?t?this.params[t]:this.params[this.index++]:E},e}();t.default=n,e.exports=t.default},function(e,t,E){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}function r(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}t.__esModule=!0;var o=E(4),T=n(o),R=E(5),N=n(R),i=["ABS","ACTIVATE","ALIAS","ALL","ALLOCATE","ALLOW","ALTER","ANY","ARE","ARRAY","AS","ASC","ASENSITIVE","ASSOCIATE","ASUTIME","ASYMMETRIC","AT","ATOMIC","ATTRIBUTES","AUDIT","AUTHORIZATION","AUX","AUXILIARY","AVG","BEFORE","BEGIN","BETWEEN","BIGINT","BINARY","BLOB","BOOLEAN","BOTH","BUFFERPOOL","BY","CACHE","CALL","CALLED","CAPTURE","CARDINALITY","CASCADED","CASE","CAST","CCSID","CEIL","CEILING","CHAR","CHARACTER","CHARACTER_LENGTH","CHAR_LENGTH","CHECK","CLOB","CLONE","CLOSE","CLUSTER","COALESCE","COLLATE","COLLECT","COLLECTION","COLLID","COLUMN","COMMENT","COMMIT","CONCAT","CONDITION","CONNECT","CONNECTION","CONSTRAINT","CONTAINS","CONTINUE","CONVERT","CORR","CORRESPONDING","COUNT","COUNT_BIG","COVAR_POP","COVAR_SAMP","CREATE","CROSS","CUBE","CUME_DIST","CURRENT","CURRENT_DATE","CURRENT_DEFAULT_TRANSFORM_GROUP","CURRENT_LC_CTYPE","CURRENT_PATH","CURRENT_ROLE","CURRENT_SCHEMA","CURRENT_SERVER","CURRENT_TIME","CURRENT_TIMESTAMP","CURRENT_TIMEZONE","CURRENT_TRANSFORM_GROUP_FOR_TYPE","CURRENT_USER","CURSOR","CYCLE","DATA","DATABASE","DATAPARTITIONNAME","DATAPARTITIONNUM","DATE","DAY","DAYS","DB2GENERAL","DB2GENRL","DB2SQL","DBINFO","DBPARTITIONNAME","DBPARTITIONNUM","DEALLOCATE","DEC","DECIMAL","DECLARE","DEFAULT","DEFAULTS","DEFINITION","DELETE","DENSERANK","DENSE_RANK","DEREF","DESCRIBE","DESCRIPTOR","DETERMINISTIC","DIAGNOSTICS","DISABLE","DISALLOW","DISCONNECT","DISTINCT","DO","DOCUMENT","DOUBLE","DROP","DSSIZE","DYNAMIC","EACH","EDITPROC","ELEMENT","ELSE","ELSEIF","ENABLE","ENCODING","ENCRYPTION","END","END-EXEC","ENDING","ERASE","ESCAPE","EVERY","EXCEPTION","EXCLUDING","EXCLUSIVE","EXEC","EXECUTE","EXISTS","EXIT","EXP","EXPLAIN","EXTENDED","EXTERNAL","EXTRACT","FALSE","FENCED","FETCH","FIELDPROC","FILE","FILTER","FINAL","FIRST","FLOAT","FLOOR","FOR","FOREIGN","FREE","FULL","FUNCTION","FUSION","GENERAL","GENERATED","GET","GLOBAL","GOTO","GRANT","GRAPHIC","GROUP","GROUPING","HANDLER","HASH","HASHED_VALUE","HINT","HOLD","HOUR","HOURS","IDENTITY","IF","IMMEDIATE","IN","INCLUDING","INCLUSIVE","INCREMENT","INDEX","INDICATOR","INDICATORS","INF","INFINITY","INHERIT","INNER","INOUT","INSENSITIVE","INSERT","INT","INTEGER","INTEGRITY","INTERSECTION","INTERVAL","INTO","IS","ISOBID","ISOLATION","ITERATE","JAR","JAVA","KEEP","KEY","LABEL","LANGUAGE","LARGE","LATERAL","LC_CTYPE","LEADING","LEAVE","LEFT","LIKE","LINKTYPE","LN","LOCAL","LOCALDATE","LOCALE","LOCALTIME","LOCALTIMESTAMP","LOCATOR","LOCATORS","LOCK","LOCKMAX","LOCKSIZE","LONG","LOOP","LOWER","MAINTAINED","MATCH","MATERIALIZED","MAX","MAXVALUE","MEMBER","MERGE","METHOD","MICROSECOND","MICROSECONDS","MIN","MINUTE","MINUTES","MINVALUE","MOD","MODE","MODIFIES","MODULE","MONTH","MONTHS","MULTISET","NAN","NATIONAL","NATURAL","NCHAR","NCLOB","NEW","NEW_TABLE","NEXTVAL","NO","NOCACHE","NOCYCLE","NODENAME","NODENUMBER","NOMAXVALUE","NOMINVALUE","NONE","NOORDER","NORMALIZE","NORMALIZED","NOT","NULL","NULLIF","NULLS","NUMERIC","NUMPARTS","OBID","OCTET_LENGTH","OF","OFFSET","OLD","OLD_TABLE","ON","ONLY","OPEN","OPTIMIZATION","OPTIMIZE","OPTION","ORDER","OUT","OUTER","OVER","OVERLAPS","OVERLAY","OVERRIDING","PACKAGE","PADDED","PAGESIZE","PARAMETER","PART","PARTITION","PARTITIONED","PARTITIONING","PARTITIONS","PASSWORD","PATH","PERCENTILE_CONT","PERCENTILE_DISC","PERCENT_RANK","PIECESIZE","PLAN","POSITION","POWER","PRECISION","PREPARE","PREVVAL","PRIMARY","PRIQTY","PRIVILEGES","PROCEDURE","PROGRAM","PSID","PUBLIC","QUERY","QUERYNO","RANGE","RANK","READ","READS","REAL","RECOVERY","RECURSIVE","REF","REFERENCES","REFERENCING","REFRESH","REGR_AVGX","REGR_AVGY","REGR_COUNT","REGR_INTERCEPT","REGR_R2","REGR_SLOPE","REGR_SXX","REGR_SXY","REGR_SYY","RELEASE","RENAME","REPEAT","RESET","RESIGNAL","RESTART","RESTRICT","RESULT","RESULT_SET_LOCATOR","RETURN","RETURNS","REVOKE","RIGHT","ROLE","ROLLBACK","ROLLUP","ROUND_CEILING","ROUND_DOWN","ROUND_FLOOR","ROUND_HALF_DOWN","ROUND_HALF_EVEN","ROUND_HALF_UP","ROUND_UP","ROUTINE","ROW","ROWNUMBER","ROWS","ROWSET","ROW_NUMBER","RRN","RUN","SAVEPOINT","SCHEMA","SCOPE","SCRATCHPAD","SCROLL","SEARCH","SECOND","SECONDS","SECQTY","SECURITY","SENSITIVE","SEQUENCE","SESSION","SESSION_USER","SIGNAL","SIMILAR","SIMPLE","SMALLINT","SNAN","SOME","SOURCE","SPECIFIC","SPECIFICTYPE","SQL","SQLEXCEPTION","SQLID","SQLSTATE","SQLWARNING","SQRT","STACKED","STANDARD","START","STARTING","STATEMENT","STATIC","STATMENT","STAY","STDDEV_POP","STDDEV_SAMP","STOGROUP","STORES","STYLE","SUBMULTISET","SUBSTRING","SUM","SUMMARY","SYMMETRIC","SYNONYM","SYSFUN","SYSIBM","SYSPROC","SYSTEM","SYSTEM_USER","TABLE","TABLESAMPLE","TABLESPACE","THEN","TIME","TIMESTAMP","TIMEZONE_HOUR","TIMEZONE_MINUTE","TO","TRAILING","TRANSACTION","TRANSLATE","TRANSLATION","TREAT","TRIGGER","TRIM","TRUE","TRUNCATE","TYPE","UESCAPE","UNDO","UNIQUE","UNKNOWN","UNNEST","UNTIL","UPPER","USAGE","USER","USING","VALIDPROC","VALUE","VARCHAR","VARIABLE","VARIANT","VARYING","VAR_POP","VAR_SAMP","VCAT","VERSION","VIEW","VOLATILE","VOLUMES","WHEN","WHENEVER","WHILE","WIDTH_BUCKET","WINDOW","WITH","WITHIN","WITHOUT","WLM","WRITE","XMLELEMENT","XMLEXISTS","XMLNAMESPACES","YEAR","YEARS"],A=["ADD","AFTER","ALTER COLUMN","ALTER TABLE","DELETE FROM","EXCEPT","FETCH FIRST","FROM","GROUP BY","GO","HAVING","INSERT INTO","INTERSECT","LIMIT","ORDER BY","SELECT","SET CURRENT SCHEMA","SET SCHEMA","SET","UNION ALL","UPDATE","VALUES","WHERE"],I=["AND","CROSS JOIN","INNER JOIN","JOIN","LEFT JOIN","LEFT OUTER JOIN","OR","OUTER JOIN","RIGHT JOIN","RIGHT OUTER JOIN"],O=void 0,u=function(){function e(t){r(this,e),this.cfg=t}return e.prototype.format=function(e){return O||(O=new N.default({reservedWords:i,reservedToplevelWords:A,reservedNewlineWords:I,stringTypes:['""',"''","``","[]"],openParens:["("],closeParens:[")"],indexedPlaceholderTypes:["?"],namedPlaceholderTypes:[":"],lineCommentTypes:["--"],specialWordChars:["#","@"]})),new T.default(this.cfg,O).format(e)},e}();t.default=u,e.exports=t.default},function(e,t,E){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}function r(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}t.__esModule=!0;var o=E(4),T=n(o),R=E(5),N=n(R),i=["ALL","ALTER","ANALYZE","AND","ANY","ARRAY","AS","ASC","BEGIN","BETWEEN","BINARY","BOOLEAN","BREAK","BUCKET","BUILD","BY","CALL","CASE","CAST","CLUSTER","COLLATE","COLLECTION","COMMIT","CONNECT","CONTINUE","CORRELATE","COVER","CREATE","DATABASE","DATASET","DATASTORE","DECLARE","DECREMENT","DELETE","DERIVED","DESC","DESCRIBE","DISTINCT","DO","DROP","EACH","ELEMENT","ELSE","END","EVERY","EXCEPT","EXCLUDE","EXECUTE","EXISTS","EXPLAIN","FALSE","FETCH","FIRST","FLATTEN","FOR","FORCE","FROM","FUNCTION","GRANT","GROUP","GSI","HAVING","IF","IGNORE","ILIKE","IN","INCLUDE","INCREMENT","INDEX","INFER","INLINE","INNER","INSERT","INTERSECT","INTO","IS","JOIN","KEY","KEYS","KEYSPACE","KNOWN","LAST","LEFT","LET","LETTING","LIKE","LIMIT","LSM","MAP","MAPPING","MATCHED","MATERIALIZED","MERGE","MINUS","MISSING","NAMESPACE","NEST","NOT","NULL","NUMBER","OBJECT","OFFSET","ON","OPTION","OR","ORDER","OUTER","OVER","PARSE","PARTITION","PASSWORD","PATH","POOL","PREPARE","PRIMARY","PRIVATE","PRIVILEGE","PROCEDURE","PUBLIC","RAW","REALM","REDUCE","RENAME","RETURN","RETURNING","REVOKE","RIGHT","ROLE","ROLLBACK","SATISFIES","SCHEMA","SELECT","SELF","SEMI","SET","SHOW","SOME","START","STATISTICS","STRING","SYSTEM","THEN","TO","TRANSACTION","TRIGGER","TRUE","TRUNCATE","UNDER","UNION","UNIQUE","UNKNOWN","UNNEST","UNSET","UPDATE","UPSERT","USE","USER","USING","VALIDATE","VALUE","VALUED","VALUES","VIA","VIEW","WHEN","WHERE","WHILE","WITH","WITHIN","WORK","XOR"],A=["DELETE FROM","EXCEPT ALL","EXCEPT","EXPLAIN DELETE FROM","EXPLAIN UPDATE","EXPLAIN UPSERT","FROM","GROUP BY","HAVING","INFER","INSERT INTO","INTERSECT ALL","INTERSECT","LET","LIMIT","MERGE","NEST","ORDER BY","PREPARE","SELECT","SET CURRENT SCHEMA","SET SCHEMA","SET","UNION ALL","UNION","UNNEST","UPDATE","UPSERT","USE KEYS","VALUES","WHERE"],I=["AND","INNER JOIN","JOIN","LEFT JOIN","LEFT OUTER JOIN","OR","OUTER JOIN","RIGHT JOIN","RIGHT OUTER JOIN","XOR"],O=void 0,u=function(){function e(t){r(this,e),this.cfg=t}return e.prototype.format=function(e){return O||(O=new N.default({reservedWords:i,reservedToplevelWords:A,reservedNewlineWords:I,stringTypes:['""',"''","``"],openParens:["(","[","{"],closeParens:[")","]","}"],namedPlaceholderTypes:["$"],lineCommentTypes:["#","--"]})),new T.default(this.cfg,O).format(e)},e}();t.default=u,e.exports=t.default},function(e,t,E){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}function r(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}t.__esModule=!0;var o=E(4),T=n(o),R=E(5),N=n(R),i=["A","ACCESSIBLE","AGENT","AGGREGATE","ALL","ALTER","ANY","ARRAY","AS","ASC","AT","ATTRIBUTE","AUTHID","AVG","BETWEEN","BFILE_BASE","BINARY_INTEGER","BINARY","BLOB_BASE","BLOCK","BODY","BOOLEAN","BOTH","BOUND","BULK","BY","BYTE","C","CALL","CALLING","CASCADE","CASE","CHAR_BASE","CHAR","CHARACTER","CHARSET","CHARSETFORM","CHARSETID","CHECK","CLOB_BASE","CLONE","CLOSE","CLUSTER","CLUSTERS","COALESCE","COLAUTH","COLLECT","COLUMNS","COMMENT","COMMIT","COMMITTED","COMPILED","COMPRESS","CONNECT","CONSTANT","CONSTRUCTOR","CONTEXT","CONTINUE","CONVERT","COUNT","CRASH","CREATE","CREDENTIAL","CURRENT","CURRVAL","CURSOR","CUSTOMDATUM","DANGLING","DATA","DATE_BASE","DATE","DAY","DECIMAL","DEFAULT","DEFINE","DELETE","DESC","DETERMINISTIC","DIRECTORY","DISTINCT","DO","DOUBLE","DROP","DURATION","ELEMENT","ELSIF","EMPTY","ESCAPE","EXCEPTIONS","EXCLUSIVE","EXECUTE","EXISTS","EXIT","EXTENDS","EXTERNAL","EXTRACT","FALSE","FETCH","FINAL","FIRST","FIXED","FLOAT","FOR","FORALL","FORCE","FROM","FUNCTION","GENERAL","GOTO","GRANT","GROUP","HASH","HEAP","HIDDEN","HOUR","IDENTIFIED","IF","IMMEDIATE","IN","INCLUDING","INDEX","INDEXES","INDICATOR","INDICES","INFINITE","INSTANTIABLE","INT","INTEGER","INTERFACE","INTERVAL","INTO","INVALIDATE","IS","ISOLATION","JAVA","LANGUAGE","LARGE","LEADING","LENGTH","LEVEL","LIBRARY","LIKE","LIKE2","LIKE4","LIKEC","LIMITED","LOCAL","LOCK","LONG","MAP","MAX","MAXLEN","MEMBER","MERGE","MIN","MINUS","MINUTE","MLSLABEL","MOD","MODE","MONTH","MULTISET","NAME","NAN","NATIONAL","NATIVE","NATURAL","NATURALN","NCHAR","NEW","NEXTVAL","NOCOMPRESS","NOCOPY","NOT","NOWAIT","NULL","NULLIF","NUMBER_BASE","NUMBER","OBJECT","OCICOLL","OCIDATE","OCIDATETIME","OCIDURATION","OCIINTERVAL","OCILOBLOCATOR","OCINUMBER","OCIRAW","OCIREF","OCIREFCURSOR","OCIROWID","OCISTRING","OCITYPE","OF","OLD","ON","ONLY","OPAQUE","OPEN","OPERATOR","OPTION","ORACLE","ORADATA","ORDER","ORGANIZATION","ORLANY","ORLVARY","OTHERS","OUT","OVERLAPS","OVERRIDING","PACKAGE","PARALLEL_ENABLE","PARAMETER","PARAMETERS","PARENT","PARTITION","PASCAL","PCTFREE","PIPE","PIPELINED","PLS_INTEGER","PLUGGABLE","POSITIVE","POSITIVEN","PRAGMA","PRECISION","PRIOR","PRIVATE","PROCEDURE","PUBLIC","RAISE","RANGE","RAW","READ","REAL","RECORD","REF","REFERENCE","RELEASE","RELIES_ON","REM","REMAINDER","RENAME","RESOURCE","RESULT_CACHE","RESULT","RETURN","RETURNING","REVERSE","REVOKE","ROLLBACK","ROW","ROWID","ROWNUM","ROWTYPE","SAMPLE","SAVE","SAVEPOINT","SB1","SB2","SB4","SECOND","SEGMENT","SELF","SEPARATE","SEQUENCE","SERIALIZABLE","SHARE","SHORT","SIZE_T","SIZE","SMALLINT","SOME","SPACE","SPARSE","SQL","SQLCODE","SQLDATA","SQLERRM","SQLNAME","SQLSTATE","STANDARD","START","STATIC","STDDEV","STORED","STRING","STRUCT","STYLE","SUBMULTISET","SUBPARTITION","SUBSTITUTABLE","SUBTYPE","SUCCESSFUL","SUM","SYNONYM","SYSDATE","TABAUTH","TABLE","TDO","THE","THEN","TIME","TIMESTAMP","TIMEZONE_ABBR","TIMEZONE_HOUR","TIMEZONE_MINUTE","TIMEZONE_REGION","TO","TRAILING","TRANSACTION","TRANSACTIONAL","TRIGGER","TRUE","TRUSTED","TYPE","UB1","UB2","UB4","UID","UNDER","UNIQUE","UNPLUG","UNSIGNED","UNTRUSTED","USE","USER","USING","VALIDATE","VALIST","VALUE","VARCHAR","VARCHAR2","VARIABLE","VARIANCE","VARRAY","VARYING","VIEW","VIEWS","VOID","WHENEVER","WHILE","WITH","WORK","WRAPPED","WRITE","YEAR","ZONE"],A=["ADD","ALTER COLUMN","ALTER TABLE","BEGIN","CONNECT BY","DECLARE","DELETE FROM","DELETE","END","EXCEPT","EXCEPTION","FETCH FIRST","FROM","GROUP BY","HAVING","INSERT INTO","INSERT","INTERSECT","LIMIT","LOOP","MODIFY","ORDER BY","SELECT","SET CURRENT SCHEMA","SET SCHEMA","SET","START WITH","UNION ALL","UNION","UPDATE","VALUES","WHERE"],I=["AND","CROSS APPLY","CROSS JOIN","ELSE","END","INNER JOIN","JOIN","LEFT JOIN","LEFT OUTER JOIN","OR","OUTER APPLY","OUTER JOIN","RIGHT JOIN","RIGHT OUTER JOIN","WHEN","XOR"],O=void 0,u=function(){function e(t){r(this,e),this.cfg=t}return e.prototype.format=function(e){return O||(O=new N.default({reservedWords:i,reservedToplevelWords:A,reservedNewlineWords:I,stringTypes:['""',"N''","''","``"],openParens:["(","CASE"],closeParens:[")","END"],indexedPlaceholderTypes:["?"],namedPlaceholderTypes:[":"],lineCommentTypes:["--"],specialWordChars:["_","$","#",".","@"]})),new T.default(this.cfg,O).format(e)},e}();t.default=u,e.exports=t.default},function(e,t,E){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}function r(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}t.__esModule=!0;var o=E(4),T=n(o),R=E(5),N=n(R),i=["ACCESSIBLE","ACTION","AGAINST","AGGREGATE","ALGORITHM","ALL","ALTER","ANALYSE","ANALYZE","AS","ASC","AUTOCOMMIT","AUTO_INCREMENT","BACKUP","BEGIN","BETWEEN","BINLOG","BOTH","CASCADE","CASE","CHANGE","CHANGED","CHARACTER SET","CHARSET","CHECK","CHECKSUM","COLLATE","COLLATION","COLUMN","COLUMNS","COMMENT","COMMIT","COMMITTED","COMPRESSED","CONCURRENT","CONSTRAINT","CONTAINS","CONVERT","CREATE","CROSS","CURRENT_TIMESTAMP","DATABASE","DATABASES","DAY","DAY_HOUR","DAY_MINUTE","DAY_SECOND","DEFAULT","DEFINER","DELAYED","DELETE","DESC","DESCRIBE","DETERMINISTIC","DISTINCT","DISTINCTROW","DIV","DO","DROP","DUMPFILE","DUPLICATE","DYNAMIC","ELSE","ENCLOSED","END","ENGINE","ENGINES","ENGINE_TYPE","ESCAPE","ESCAPED","EVENTS","EXEC","EXECUTE","EXISTS","EXPLAIN","EXTENDED","FAST","FETCH","FIELDS","FILE","FIRST","FIXED","FLUSH","FOR","FORCE","FOREIGN","FULL","FULLTEXT","FUNCTION","GLOBAL","GRANT","GRANTS","GROUP_CONCAT","HEAP","HIGH_PRIORITY","HOSTS","HOUR","HOUR_MINUTE","HOUR_SECOND","IDENTIFIED","IF","IFNULL","IGNORE","IN","INDEX","INDEXES","INFILE","INSERT","INSERT_ID","INSERT_METHOD","INTERVAL","INTO","INVOKER","IS","ISOLATION","KEY","KEYS","KILL","LAST_INSERT_ID","LEADING","LEVEL","LIKE","LINEAR","LINES","LOAD","LOCAL","LOCK","LOCKS","LOGS","LOW_PRIORITY","MARIA","MASTER","MASTER_CONNECT_RETRY","MASTER_HOST","MASTER_LOG_FILE","MATCH","MAX_CONNECTIONS_PER_HOUR","MAX_QUERIES_PER_HOUR","MAX_ROWS","MAX_UPDATES_PER_HOUR","MAX_USER_CONNECTIONS","MEDIUM","MERGE","MINUTE","MINUTE_SECOND","MIN_ROWS","MODE","MODIFY","MONTH","MRG_MYISAM","MYISAM","NAMES","NATURAL","NOT","NOW()","NULL","OFFSET","ON DELETE","ON UPDATE","ON","ONLY","OPEN","OPTIMIZE","OPTION","OPTIONALLY","OUTFILE","PACK_KEYS","PAGE","PARTIAL","PARTITION","PARTITIONS","PASSWORD","PRIMARY","PRIVILEGES","PROCEDURE","PROCESS","PROCESSLIST","PURGE","QUICK","RAID0","RAID_CHUNKS","RAID_CHUNKSIZE","RAID_TYPE","RANGE","READ","READ_ONLY","READ_WRITE","REFERENCES","REGEXP","RELOAD","RENAME","REPAIR","REPEATABLE","REPLACE","REPLICATION","RESET","RESTORE","RESTRICT","RETURN","RETURNS","REVOKE","RLIKE","ROLLBACK","ROW","ROWS","ROW_FORMAT","SECOND","SECURITY","SEPARATOR","SERIALIZABLE","SESSION","SHARE","SHOW","SHUTDOWN","SLAVE","SONAME","SOUNDS","SQL","SQL_AUTO_IS_NULL","SQL_BIG_RESULT","SQL_BIG_SELECTS","SQL_BIG_TABLES","SQL_BUFFER_RESULT","SQL_CACHE","SQL_CALC_FOUND_ROWS","SQL_LOG_BIN","SQL_LOG_OFF","SQL_LOG_UPDATE","SQL_LOW_PRIORITY_UPDATES","SQL_MAX_JOIN_SIZE","SQL_NO_CACHE","SQL_QUOTE_SHOW_CREATE","SQL_SAFE_UPDATES","SQL_SELECT_LIMIT","SQL_SLAVE_SKIP_COUNTER","SQL_SMALL_RESULT","SQL_WARNINGS","START","STARTING","STATUS","STOP","STORAGE","STRAIGHT_JOIN","STRING","STRIPED","SUPER","TABLE","TABLES","TEMPORARY","TERMINATED","THEN","TO","TRAILING","TRANSACTIONAL","TRUE","TRUNCATE","TYPE","TYPES","UNCOMMITTED","UNIQUE","UNLOCK","UNSIGNED","USAGE","USE","USING","VARIABLES","VIEW","WHEN","WITH","WORK","WRITE","YEAR_MONTH"],A=["ADD","AFTER","ALTER COLUMN","ALTER TABLE","DELETE FROM","EXCEPT","FETCH FIRST","FROM","GROUP BY","GO","HAVING","INSERT INTO","INSERT","INTERSECT","LIMIT","MODIFY","ORDER BY","SELECT","SET CURRENT SCHEMA","SET SCHEMA","SET","UNION ALL","UNION","UPDATE","VALUES","WHERE"],I=["AND","CROSS APPLY","CROSS JOIN","ELSE","INNER JOIN","JOIN","LEFT JOIN","LEFT OUTER JOIN","OR","OUTER APPLY","OUTER JOIN","RIGHT JOIN","RIGHT OUTER JOIN","WHEN","XOR"],O=void 0,u=function(){
+function e(t){r(this,e),this.cfg=t}return e.prototype.format=function(e){return O||(O=new N.default({reservedWords:i,reservedToplevelWords:A,reservedNewlineWords:I,stringTypes:['""',"N''","''","``","[]"],openParens:["(","CASE"],closeParens:[")","END"],indexedPlaceholderTypes:["?"],namedPlaceholderTypes:["@",":"],lineCommentTypes:["#","--"]})),new T.default(this.cfg,O).format(e)},e}();t.default=u,e.exports=t.default},function(e,t,E){var n=E(3),r=E(1),o=n(r,"DataView");e.exports=o},function(e,t,E){var n=E(3),r=E(1),o=n(r,"Map");e.exports=o},function(e,t,E){var n=E(3),r=E(1),o=n(r,"Promise");e.exports=o},function(e,t,E){var n=E(3),r=E(1),o=n(r,"Set");e.exports=o},function(e,t,E){var n=E(3),r=E(1),o=n(r,"WeakMap");e.exports=o},function(e,t){function E(e,t){for(var E=-1,n=null==e?0:e.length,r=Array(n);++E<n;)r[E]=t(e[E],E,e);return r}e.exports=E},function(e,t){function E(e){return e.split("")}e.exports=E},function(e,t){function E(e,t,E,n){for(var r=e.length,o=E+(n?1:-1);n?o--:++o<r;)if(t(e[o],o,e))return o;return-1}e.exports=E},function(e,t,E){function n(e,t,E){return t===t?T(e,t,E):r(e,o,E)}var r=E(35),o=E(38),T=E(59);e.exports=n},function(e,t,E){function n(e){return o(e)&&r(e)==T}var r=E(2),o=E(7),T="[object Arguments]";e.exports=n},function(e,t){function E(e){return e!==e}e.exports=E},function(e,t,E){function n(e){if(!T(e)||o(e))return!1;var t=r(e)?S:i;return t.test(R(e))}var r=E(17),o=E(54),T=E(6),R=E(14),N=/[\\^$.*+?()[\]{}|]/g,i=/^\[object .+?Constructor\]$/,A=Function.prototype,I=Object.prototype,O=A.toString,u=I.hasOwnProperty,S=RegExp("^"+O.call(u).replace(N,"\\$&").replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g,"$1.*?")+"$");e.exports=n},function(e,t,E){function n(e){return T(e)&&o(e.length)&&!!y[r(e)]}var r=E(2),o=E(18),T=E(7),R="[object Arguments]",N="[object Array]",i="[object Boolean]",A="[object Date]",I="[object Error]",O="[object Function]",u="[object Map]",S="[object Number]",a="[object Object]",s="[object RegExp]",L="[object Set]",c="[object String]",C="[object WeakMap]",f="[object ArrayBuffer]",p="[object DataView]",l="[object Float32Array]",d="[object Float64Array]",P="[object Int8Array]",D="[object Int16Array]",U="[object Int32Array]",M="[object Uint8Array]",h="[object Uint8ClampedArray]",_="[object Uint16Array]",v="[object Uint32Array]",y={};y[l]=y[d]=y[P]=y[D]=y[U]=y[M]=y[h]=y[_]=y[v]=!0,y[R]=y[N]=y[f]=y[i]=y[p]=y[A]=y[I]=y[O]=y[u]=y[S]=y[a]=y[s]=y[L]=y[c]=y[C]=!1,e.exports=n},function(e,t,E){function n(e){if(!r(e))return o(e);var t=[];for(var E in Object(e))R.call(e,E)&&"constructor"!=E&&t.push(E);return t}var r=E(13),o=E(55),T=Object.prototype,R=T.hasOwnProperty;e.exports=n},function(e,t){function E(e,t){var E="";if(!e||1>t||t>n)return E;do t%2&&(E+=e),t=r(t/2),t&&(e+=e);while(t);return E}var n=9007199254740991,r=Math.floor;e.exports=E},function(e,t){function E(e,t,E){var n=-1,r=e.length;0>t&&(t=-t>r?0:r+t),E=E>r?r:E,0>E&&(E+=r),r=t>E?0:E-t>>>0,t>>>=0;for(var o=Array(r);++n<r;)o[n]=e[n+t];return o}e.exports=E},function(e,t){function E(e){return function(t){return e(t)}}e.exports=E},function(e,t,E){function n(e,t,E){var n=e.length;return E=void 0===E?n:E,t||n>E?r(e,t,E):e}var r=E(43);e.exports=n},function(e,t,E){function n(e,t){for(var E=e.length;E--&&r(t,e[E],0)>-1;);return E}var r=E(36);e.exports=n},function(e,t,E){var n=E(1),r=n["__core-js_shared__"];e.exports=r},function(e,t,E){function n(e){var t=T.call(e,N),E=e[N];try{e[N]=void 0;var n=!0}catch(e){}var r=R.call(e);return n&&(t?e[N]=E:delete e[N]),r}var r=E(9),o=Object.prototype,T=o.hasOwnProperty,R=o.toString,N=r?r.toStringTag:void 0;e.exports=n},function(e,t,E){var n=E(28),r=E(29),o=E(30),T=E(31),R=E(32),N=E(2),i=E(14),A="[object Map]",I="[object Object]",O="[object Promise]",u="[object Set]",S="[object WeakMap]",a="[object DataView]",s=i(n),L=i(r),c=i(o),C=i(T),f=i(R),p=N;(n&&p(new n(new ArrayBuffer(1)))!=a||r&&p(new r)!=A||o&&p(o.resolve())!=O||T&&p(new T)!=u||R&&p(new R)!=S)&&(p=function(e){var t=N(e),E=t==I?e.constructor:void 0,n=E?i(E):"";if(n)switch(n){case s:return a;case L:return A;case c:return O;case C:return u;case f:return S}return t}),e.exports=p},function(e,t){function E(e,t){return null==e?void 0:e[t]}e.exports=E},function(e,t){function E(e){return A.test(e)}var n="\\ud800-\\udfff",r="\\u0300-\\u036f",o="\\ufe20-\\ufe2f",T="\\u20d0-\\u20ff",R=r+o+T,N="\\ufe0e\\ufe0f",i="\\u200d",A=RegExp("["+i+n+R+N+"]");e.exports=E},function(e,t){function E(e,t){var E=typeof e;return t=null==t?n:t,!!t&&("number"==E||"symbol"!=E&&r.test(e))&&e>-1&&e%1==0&&t>e}var n=9007199254740991,r=/^(?:0|[1-9]\d*)$/;e.exports=E},function(e,t,E){function n(e,t,E){if(!R(E))return!1;var n=typeof t;return!!("number"==n?o(E)&&T(t,E.length):"string"==n&&t in E)&&r(E[t],e)}var r=E(62),o=E(16),T=E(52),R=E(6);e.exports=n},function(e,t,E){function n(e){return!!o&&o in e}var r=E(47),o=function(){var e=/[^.]+$/.exec(r&&r.keys&&r.keys.IE_PROTO||"");return e?"Symbol(src)_1."+e:""}();e.exports=n},function(e,t,E){var n=E(58),r=n(Object.keys,Object);e.exports=r},function(e,t,E){(function(e){var n=E(12),r="object"==typeof t&&t&&!t.nodeType&&t,o=r&&"object"==typeof e&&e&&!e.nodeType&&e,T=o&&o.exports===r,R=T&&n.process,N=function(){try{var e=o&&o.require&&o.require("util").types;return e?e:R&&R.binding&&R.binding("util")}catch(e){}}();e.exports=N}).call(t,E(20)(e))},function(e,t){function E(e){return r.call(e)}var n=Object.prototype,r=n.toString;e.exports=E},function(e,t){function E(e,t){return function(E){return e(t(E))}}e.exports=E},function(e,t){function E(e,t,E){for(var n=E-1,r=e.length;++n<r;)if(e[n]===t)return n;return-1}e.exports=E},function(e,t,E){function n(e){return o(e)?T(e):r(e)}var r=E(34),o=E(51),T=E(61);e.exports=n},function(e,t){function E(e){return e.match(l)||[]}var n="\\ud800-\\udfff",r="\\u0300-\\u036f",o="\\ufe20-\\ufe2f",T="\\u20d0-\\u20ff",R=r+o+T,N="\\ufe0e\\ufe0f",i="["+n+"]",A="["+R+"]",I="\\ud83c[\\udffb-\\udfff]",O="(?:"+A+"|"+I+")",u="[^"+n+"]",S="(?:\\ud83c[\\udde6-\\uddff]){2}",a="[\\ud800-\\udbff][\\udc00-\\udfff]",s="\\u200d",L=O+"?",c="["+N+"]?",C="(?:"+s+"(?:"+[u,S,a].join("|")+")"+c+L+")*",f=c+L+C,p="(?:"+[u+A+"?",A,S,a,i].join("|")+")",l=RegExp(I+"(?="+I+")|"+p+f,"g");e.exports=E},function(e,t){function E(e,t){return e===t||e!==e&&t!==t}e.exports=E},function(e,t,E){function n(e){return e=r(e),e&&T.test(e)?e.replace(o,"\\$&"):e}var r=E(10),o=/[\\^$.*+?()[\]{}|]/g,T=RegExp(o.source);e.exports=n},function(e,t,E){var n=E(37),r=E(7),o=Object.prototype,T=o.hasOwnProperty,R=o.propertyIsEnumerable,N=n(function(){return arguments}())?n:function(e){return r(e)&&T.call(e,"callee")&&!R.call(e,"callee")};e.exports=N},function(e,t,E){(function(e){var n=E(1),r=E(70),o="object"==typeof t&&t&&!t.nodeType&&t,T=o&&"object"==typeof e&&e&&!e.nodeType&&e,R=T&&T.exports===o,N=R?n.Buffer:void 0,i=N?N.isBuffer:void 0,A=i||r;e.exports=A}).call(t,E(20)(e))},function(e,t,E){function n(e){if(null==e)return!0;if(N(e)&&(R(e)||"string"==typeof e||"function"==typeof e.splice||i(e)||I(e)||T(e)))return!e.length;var t=o(e);if(t==O||t==u)return!e.size;if(A(e))return!r(e).length;for(var E in e)if(a.call(e,E))return!1;return!0}var r=E(41),o=E(49),T=E(64),R=E(15),N=E(16),i=E(65),A=E(13),I=E(67),O="[object Map]",u="[object Set]",S=Object.prototype,a=S.hasOwnProperty;e.exports=n},function(e,t,E){var n=E(40),r=E(44),o=E(56),T=o&&o.isTypedArray,R=T?r(T):n;e.exports=R},function(e,t){function E(e){var t=null==e?0:e.length;return t?e[t-1]:void 0}e.exports=E},function(e,t,E){function n(e,t,E){return t=(E?o(e,t,E):void 0===t)?1:T(t),r(R(e),t)}var r=E(42),o=E(53),T=E(72),R=E(10);e.exports=n},function(e,t){function E(){return!1}e.exports=E},function(e,t,E){function n(e){if(!e)return 0===e?e:0;if(e=r(e),e===o||e===-o){var t=0>e?-1:1;return t*T}return e===e?e:0}var r=E(73),o=1/0,T=1.7976931348623157e308;e.exports=n},function(e,t,E){function n(e){var t=r(e),E=t%1;return t===t?E?t-E:t:0}var r=E(71);e.exports=n},function(e,t,E){function n(e){if("number"==typeof e)return e;if(o(e))return T;if(r(e)){var t="function"==typeof e.valueOf?e.valueOf():e;e=r(t)?t+"":t}if("string"!=typeof e)return 0===e?e:+e;e=e.replace(R,"");var E=i.test(e);return E||A.test(e)?I(e.slice(2),E?2:8):N.test(e)?T:+e}var r=E(6),o=E(19),T=NaN,R=/^\s+|\s+$/g,N=/^[-+]0x[0-9a-f]+$/i,i=/^0b[01]+$/i,A=/^0o[0-7]+$/i,I=parseInt;e.exports=n},function(e,t,E){function n(e,t,E){if(e=N(e),e&&(E||void 0===t))return e.replace(i,"");if(!e||!(t=r(t)))return e;var n=R(e),A=T(n,R(t))+1;return o(n,0,A).join("")}var r=E(11),o=E(45),T=E(46),R=E(60),N=E(10),i=/\s+$/;e.exports=n}])});
+	</script>
+</head>
+<body>
+<div id="app" style="width:100%;height:100%;" >
+<Dialog id="ReportInfoWin" class="mini-window" style="width:350px;height:250px;display: none;" showModal="true" allowResize="false" allowDrag="true">
+	<table v-bind:id="Math.guid()" class="form">
+		<tr>
+			<td class="form-label" style="width:120px;">
+				<input class="mini-hidden" name="uid" />
+				<input class="mini-hidden" name="args" />
+				<input class="mini-hidden" name="code" />
+				<label>名称：<span style="color:red">*</span></label>
+				</td>
+			<td style="width:160px;">
+				<input name="name" emptyText="请填写" required="true" onvalidation="app.onChineseValidation" style="width: 250px;" class="mini-textbox" />
+				</td>
+		</tr><tr>
+			<td >
+				<label>类型：<span style="color:red">*</span></label>
+				</td>
+			<td >
+				<input id="dsn" name="dsn" value="0" textField="text" valueField="id" required="true" style="width:250px;" showNullItem="false" allowInput="false" class="mini-combobox" />
+				</td>
+		</tr><tr>
+			<td >
+				<label>创建时间：<span style="color:red"></span></label>
+				</td>
+			<td >
+				<input name="cts"  _valueType="string" enabled="false" _value="new Date(new Date().getTime() - 0*24*60*60*1000);" format="yyyy-MM-dd HH:mm:ss" _maxdate="javascript:new Date();" _emptytext="选择日期" style="width:250px;" class="mini-datepicker" />
+				</td>
+		</tr><tr>
+			<td >
+				<label>备注：<span style="color:red"></span></label>
+				</td>
+			<td >
+				<textarea name="memo" style="width:250px;height:80px;" class="mini-textarea" emptyText="请输入"></textarea>
+				</td>
+		</tr>
+	</table>
+	<div style="float:right;margin-right:10px;">
+		<a v-html="'确定'" class="mini-button mini-button-primary submit"				style="width:80px;margin-top:10px;" ></a>
+		<a v-html="'取消'" class="mini-button"	onclick="DialogHide('ReportInfoWin');"	style="width:80px;margin-top:10px;" ></a>
+	</div>
+</Dialog>
+<Dialog id="optionInfoWin" class="mini-window" style="width:600px;height:480px;display: none;" showCloseButton="false" showModal="true" allowResize="false" allowDrag="true">
+	<div class="mini-toolbar" style="border-bottom:0;padding:0px;">
+		<table style="width:100%;" v-bind:id="Math.guid()" class="form">
+			<tr>
+				<td style="width:300px;">
+					<a v-html="'增加'" class="mini-button" onclick="app.addOptionInfo()" iconCls="icon-add"		plain="true"></a>
+					<a v-html="'删除'" class="mini-button" onclick="app.delOptionInfo()" iconCls="icon-remove"	plain="true"></a>
+					<span class="separator"></span>
+					<a v-html="'保存'" class="mini-button" onclick="app.savOptionInfo()" iconCls="icon-save" 	plain="true"></a>
+				</td>
+				<td style="white-space:nowrap;">
+					<div name="multiSelect"		value="false"	text="允许多选"  class="mini-checkbox"></div>
+					<div name="showNullItem"	value="false"	text="显示空行"  class="mini-checkbox"></div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a v-html="'导出'" class="mini-button" onclick="app.expOptionInfo()" iconCls="icon-downgrade"plain="true"></a>
+					<span class="separator"></span>
+					<a href="javascript:;" class="a-upload" style="top: 6px;" ><span class="mini-button-icon mini-icon mini-iconfont icon-upgrade" ></span>&nbsp;<input type='file' _class="mini-htmlfile" id="impFile" onchange="app.impOptionInfo(window.event)" _limitType="*.json" accept="application/json" _style="width:65px;" />导入</a> 
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div id="optionInfoGrid" class="mini-datagrid" style="width:100%;height:370px;" allowResize="false" pageSize="20" allowCellEdit="true" allowCellSelect="true" multiSelect="true" editNextOnEnterKey="true"  editNextRowCell="true">
+		<div property="columns">
+			<div type="indexcolumn"></div>
+			<div type="checkcolumn"></div>
+			<div name="text"field="text"headerAlign="center" allowSort="true" width="150" >选项标题<input property="editor" class="mini-textbox" style="width:100%;" minWidth="200" /></div>
+			<div name="id"	field="id" 	headerAlign="center" allowSort="true" width="150" >选项值<input property="editor" class="mini-textbox" style="width:100%;" minWidth="200" /></div>
+		</div>
+	</div>
+</Dialog>
+<div id="DialogEnvInfo" data-options="{model:0}" class="mini-window" style="width:600px;height:500px;display: none;" showModal="true" allowResize="false" allowDrag="true">
+	<div class="mini-fit">
+		<div id="EnvInfoGrid" onrowdblclick="app.envSave" _onbeforeload="app.fndEnvInfo" onselectionchanged="" showFilterRow="false" _borderstyle="border:none;" allowCellWrap="false" totalField="totalCount" pageSize="100" showReloadButton="false" allowAlternating="true" virtualScroll="false" virtualColumns="false" sortmode="client" multiselect="true" class="mini-datagrid" showColumnsMenu="true" style="width: 100%;height:100%;" >
+			<div property="columns">
+				<div width="60" type="checkcolumn"></div>
+				<div v-html="'<h4>序号</h4>'" width="60" type="indexcolumn"></div>
+				<div v-html="'变量名'" 		field="envName" renderer="" width="200" allowSort="true"></div>
+				<div v-html="'变量描述'" 	field="envDesc" renderer="" width="200" allowSort="true"></div>
+				<div v-html="'变量值'" 		field="envValue" renderer="" width="200" allowSort="true"></div>
+				<div v-html="''" field="" renderer="" width="100%" allowSort="true"></div>
+			</div tag="columns">
+		</div tag="mini-grid">
+	</div tag="mini-fit">
+	<script type="text/ecmascript">
+	$(function(){if(app){
+		app.envChoose=function(e,model){
+			_('DialogEnvInfo').model=model;
+			_('DialogEnvInfo').set({ "title": '双击 选择环境变量' }).show();
+			_('EnvInfoGrid').setData(app.envs);
+		};
+		app.envSave=function(e){
+			HasSelect('EnvInfoGrid',"请选择要 添加 的环境变量",function(rows){
+				[function(){
+					InsertEditorContent(`'/*--__${rows[0]["envName"]}--*/'`);
+				},function(){
+					with(window.queryComboEditor.getSelection()){
+						window.queryComboEditor.executeEdits(app.root, [{identifier: { major: 1, minor: 1 }, range: new monaco.Range(startLineNumber, startColumn, endLineNumber, endColumn), text: `'/*--__${rows[0]["envName"]}--*/'`, forceMoveMarkers: false}])
+						window.queryComboEditor.focus()
+					}
+				}][_('DialogEnvInfo').model]();
+				DialogHide('DialogEnvInfo');
+			});
+		};
+	}});
+	</script>
+</div>
+	<div id="mainLayout" class="mini-layout" style="width:100%;height:100%;display:none;" borderstyle="border:none;">
+		<div title="工程浏览" region="west" expanded="false" showSplit="true" showHeader="true" width="600" showProxyText="true"  borderstyle="border:none;" _style="border:none;">
+			<div property="toolbar" >
+				<table id="BizsToolbar" border="0" cellpadding="1" cellspacing="2" >
+					<tr>
+						<td style="width:300px;">
+							<a v-html="'新增'" onclick="app.addReportInfo()" id=""   _enabled="false" class="mini-button"   iconCls="icon-add" 		plain="true"></a>
+							<a v-html="'编辑'" onclick="app.modReportInfo()" id=""   _enabled="false" class="mini-button"   iconCls="icon-edit"		plain="true"></a>
+							<a v-html="'加载'" onclick="app.lodProj()" 	 	 id=""   _enabled="false" class="mini-button"   iconCls="icon-reload"	plain="true"></a>
+							<span class="separator"></span>
+							<a v-html="'删除'" onclick="app.delReportInfo()" id="" 	_enabled="false" class="mini-button"   iconCls="icon-remove"	plain="true"></a>
+							</td>
+						<td>
+							<input name="keyword" id="keywordBizs"  onenter="app.fndProjs" emptyText="请填写"  style="width: 150px;" class="mini-textbox" />
+							<a v-html="'查询'" class="mini-button mini-button-primary" onclick="app.fndProjs"></a>
+							</td>
+					</tr>
+				</table>
+			</div><!--toolbar-->
+			<div class="mini-fit">
+				<div id="ProjsGrid" onrowdblclick="app.lodProj" onbeforeload="app.fndProjs" onselectionchanged="" showFilterRow="false" _borderstyle="border:none;" allowCellWrap="false" totalField="totalCount" pageSize="20" showReloadButton="false" allowAlternating="true" virtualScroll="false" virtualColumns="false" sortmode="client" multiselect="true" class="mini-datagrid" showColumnsMenu="true" style="width: 100%;height:100%;" >
+					<div property="columns">
+						<div width="60" type="checkcolumn"></div>
+						<div v-html="'<h4>序号</h4>'" width="60" type="indexcolumn"></div>
+						<div v-html="'类型'" 	field="dsn"	renderer="app.dsnRenderer" 		_data-options="{'keyId':'keywordBizs'} " width="120" allowSort="true"></div>
+						<div v-html="'名称'" 	field="name"renderer="app.nameRenderer" 	_data-options="{'keyId':'keywordBizs'} " width="120" allowSort="true"></div>
+						<div v-html="'备注'" 	field="memo"renderer="app.nameRenderer" 	_data-options="{'keyId':'keywordBizs'} " width="120" allowSort="true"></div>
+						<div v-html="'创建时间'"field="cts"	renderer="app.iso8601Renderer" 	width="120" allowSort="true"></div>
+						<div 					field=""	renderer=""						width="50"  allowSort="true"></div>
+					</div tag="columns">
+				</div tag="mini-grid">
+			</div tag="mini-fit">
+		</div><!-- west -->
+		<div region="center" showHeader="false" borderstyle="border:none;" _style="border:none;">
+			<div id="workspaceLayout" class="mini-layout" style="width:100%;height:100%;" borderstyle="border:none;" style="border:none;">
+				<div region="center" showHeader="false" borderstyle="border:none;" style="border:none;">
+					<div property="toolbar" style="padding-left:5px;">
+						<input id="currUid" class="mini-hidden"  />
+						项目名称：<input id="currBiz" enabled="false" _emptyText="请填写" _required="true" style="width: 150px;" class="mini-textbox" />
+						数据源：<input id="currDsn" enabled="false" value="0" textField="text" valueField="id" style="width:150px;" showNullItem="false" allowInput="false" class="mini-combobox" />
+						<a v-html="'保存(Ctrl+S)'" onclick="app.saveBiz()" iconCls="icon-save"     plain="true" class="mini-button" ></a>
+						<a v-html="'执行(Ctrl+R)'" onclick="app.execBiz()" iconCls="icon-ok"       plain="true" class="mini-button" ></a>
+						<a v-html="'下载sql源代码'" onclick="app.downBiz()" iconCls="icon-download"  plain="true" class="mini-button" ></a>
+					</div>
+					<div class="mini-fit" style="overflow:hidden;width:100%;height:500px;">
+						<div class="mini-splitter" handlerSize="15" style="width:100%;height:100%;">
+							<div size="50%" showCollapseButton="true" style="padding:5px;" borderStyle="border:none;">
+								<div id="codeContainer" style=" height:100%;border:1px solid grey;"></div>
+							</div>
+							<div showCollapseButton="true" borderStyle="border:none;">
+								<div id="tabsArgs" _onactivechanged="javascript:if(app.argsBuild)app.argsBuild()"	 class="mini-tabs" activeIndex="0" style="width:100%;height:100%;" plain="false" borderStyle="border:none;">
+									<div title="参数编辑" borderStyle="border:none;">
+										<div class="mini-panel" title="参数列表" iconCls="icon-add" style="width:100%;height:100%;" showHeader="false" showToolbar="true" showCollapseButton="false" showFooter="false" allowResize="false" collapseOnTitleClick="false">
+											<div property="toolbar" >
+												<table>
+													<tr>
+														<td>
+															<a v-html="'新增'" onclick="app.argsAdd()" id=""   _enabled="false" class="mini-button"   iconCls="icon-add"		plain="true"></a>
+															<span class="separator"></span>
+															<a v-html="'删除'" onclick="app.argsDel()" id="" 	_enabled="false" class="mini-button"   iconCls="icon-remove"	plain="true"></a>
+															<span class="separator"></span>
+															<a v-html="'上移'" onclick="app.argsMovUp()" id=""   _enabled="false" class="mini-button"   iconCls="icon-upload"		plain="true"></a>
+															<a v-html="'下移'" onclick="app.argsMovDw()" id=""   _enabled="false" class="mini-button"   iconCls="icon-download"	plain="true"></a>
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<a v-html="'插入参数'" onclick="app.argsIns(0)" id="" 	_enabled="false" class="mini-button"   iconCls="icon-add"	plain="true"></a>
+															<span class="separator"></span>
+															<a v-html="'文本条件'" onclick="app.argsIns(1)" id="" 	_enabled="false" class="mini-button"   iconCls="icon-add"	plain="true"></a>
+															<a v-html="'数组条件'" onclick="app.argsIns(3)" id="" 	_enabled="false" class="mini-button"   iconCls="icon-add"	plain="true"></a>
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<a v-html="'环境变量'" onclick="app.envChoose(window.event,0)" id="" 	_enabled="false" class="mini-button"   iconCls="icon-add"	plain="true"></a>
+															<span class="separator"></span>
+															<a v-html="'日期类型'" onclick="app.argsIns(2)" id="" 	_enabled="false" class="mini-button"   iconCls="icon-add"	plain="true"></a>
+														</td>
+													</tr>
+												</table>
+											</div>
+											<div id="ArgsGrid" onrowdblclick="" onbeforeload="" onselectionchanged=""  allowCellEdit="true" allowCellSelect="true" editNextOnEnterKey="true" editNextRowCell="true" showFilterRow="false" _borderstyle="border:none;" allowCellWrap="false" totalField="totalCount" pageSize="20" showReloadButton="false" allowAlternating="true" virtualScroll="false" virtualColumns="false" sortmode="client" multiselect="true" class="mini-datagrid" showColumnsMenu="true" style="width: 100%;height:100%;" >
+												<div property="columns">
+													<div width="60" type="checkcolumn"></div>
+													<div v-html="'<h4>序号</h4>'" width="60" type="indexcolumn"></div>
+													<div name="title"	field="title"	headerAlign="center" allowSort="true" width="100" >参数标题<input property="editor" class="mini-textbox" style="width:100%;" /></div>
+													<div name="name"	field="name"	headerAlign="center" allowSort="true" width="100" >参数名称<input property="editor" class="mini-textbox" style="width:100%;" /></div>
+													<div name="type" 	field="type" 	headerAlign="center" allowSort="true" width="200" type="comboboxcolumn" autoShowPopup="true" >参数类型<input property="editor" class="mini-combobox" style="width:100%;"  data="[{'id':0,'text':'\u5b57\u7b26\u4e32'},{'id':1,'text':'\u65e5\u671f'},{'id':2,'text':'\u5e03\u5c14\u578b'},{'id':3,'text':'\u6574\u6570'},{'id':4,'text':'\u4e0b\u62c9\u9009\u53d6'},{'id':5,'text':'\u591a\u9879\u8f93\u5165'},{'id':6,'text':'\u9a8c\u8bc1\u5668\uff08\u81f3\u5c11\u9009\u4e2d\u4e00\u9879\uff09'},{'id':7,'text':'\u81ea\u5b9a\u4e49\u8868\u5355\u9a8c\u8bc1\u5668'},{'id':8,'text':'\u4e0b\u62c9\u9009\u53d6\uff08\u6765\u81ea\u67e5\u8be2\uff09'}]"  /></div>
+													<div name="options" field="options" headerAlign="center" allowSort="true" width="100" >选项<input property="editor" class="mini-button" style="width:100%;" onclick="app.modOptionInfo()" _plain="true" text="编辑" /></div>
+													<div name="defval"  field="defval" 	headerAlign="center" allowSort="true" width="200" >默认值<input property="editor" class="mini-textarea" style="width:100%;" /></div>
+													<div v-html="'必填'" name="required" field="required" headerAlign="center" width="60" type="checkboxcolumn" trueValue="true" falseValue="false" ></div>
+													<div field="width" width="60" allowSort="true" >宽度<input property="editor" class="mini-spinner"  minValue="50" maxValue="1000" value="250" style="width:100%;"/></div>
+												</div><!-- columns -->
+											</div><!-- grid -->
+										</div><!-- panel -->
+									</div>
+									<div title="预览" borderStyle="border:none;">
+										<div class="mini-panel" title="检索条件" iconCls="icon-add" style="width:100%;height:100%;" showHeader="false" showToolbar="true" showCollapseButton="false" showFooter="false" allowResize="false" collapseOnTitleClick="false">
+											<div property="toolbar" >
+												<a v-html="'生成'" onclick="javascript:if(app.argsBuild)app.argsBuild()" id=""   _enabled="false" class="mini-button"   iconCls="icon-add"		plain="true"></a>
+												<a v-html="'浏览'" onclick="javascript:window.open(`${window.location.href}?uid=${_('currUid').getValue()}`,'_blank')" id=""   _enabled="false" class="mini-button"   iconCls="icon-ok"		plain="true"></a>
+											</div>
+											<div id="prevForm">
+											</div>
+										</div>
+									</div><!--预览-->
+								</div><!--tabs-->
+							</div><!--showCollapseButton-->
+						</div><!-- splitter -->
+					</div><!-- fit -->
+				</div><!-- center -->
+				<div title="控制台" region="south" expanded="false" showSplit="true" showHeader="true" height="300" borderstyle="border:none;" style="border:none;">
+					<div class="mini-tabs" activeIndex="0" style="width:100%;height:100%;" plain="false">
+						<div title="查询结果" >
+							<div id="prevGrid" onrowdblclick="" onbeforeload="app.execBiz" onselectionchanged="" showFilterRow="false" _borderstyle="border:none;" allowCellWrap="false" totalField="totalCount" pageSize="100" showReloadButton="false" allowAlternating="true" virtualScroll="false" virtualColumns="false" sortmode="client" multiselect="true" class="mini-datagrid" showColumnsMenu="true" style="width: 100%;height:100%;" ></div>
+						</div>
+						<div title="调试信息" style="padding:0px;" >
+							<pre style="margin:0px;" ><code class="sql" id="pcode"></code></pre>
+						</div>
+					</div>
+				</div><!-- south -->
+			</div><!-- layout -->
+		</div><!-- center -->
+	</div><!-- layout -->
+	<div id="prodForm" title="" showHeader="false" showToolbar="false" style="width:100%;height:100%;border:none;" bodyStyle="border:none;padding:0" class="mini-panel" >
+		<div class="mini-fit">
+			<div id="prodReport" title="加载中..." showHeader="true" showToolbar="true" showCollapseButton="true" collapseOnTitleClick="true" style="width:100%;border:none;" toolbarStyle="border:none;" bodyStyle="padding:0;border:none;" class="mini-panel" >
+				<div property="toolbar" id="prodQuery" style="padding-left:8px;border:none;">
+				</div>
+			</div>
+			<div class="mini-fit">
+				<div id="resultGrid" onrowdblclick="" onbeforeload="app.execBiz" onselectionchanged="" showFilterRow="false" borderstyle="border:none;" allowCellWrap="false" totalField="totalCount" pageSize="100" showReloadButton="false" allowAlternating="true" virtualScroll="false" virtualColumns="false" sortmode="client" multiselect="true" class="mini-datagrid" showColumnsMenu="true" style="width: 100%;height:100%;border:none;" >
+				</div>
+			</div>
+		</div>
+	</div>
+</div><!-- app -->
+<script defer type="text/ecmascript">
+$(function(){if(app){
+	var baseUrl=("localhost"===window.location.hostname)?"":`/reportx`;
+	app.addReportInfo=function(){
+		DialogShow('ReportInfoWin','新增 报表信息','app.savReportInfo(1)');
+	}
+	app.modReportInfo=function(){
+		HasSelect("ProjsGrid","请选择要 编辑 的记录",function(rows){
+			PostData(`${baseUrl}/readBiz?uid=${rows[0].uid}`,{},function (resp) {
+				DialogShow('ReportInfoWin','编辑 报表信息','app.savReportInfo(2)',resp.data[0]);
+			});
+		});
+	}
+	app.savReportInfo=function(mode){
+		var form=DialogForm('ReportInfoWin');
+		form.validate();
+		if (form.isValid() == false) return;
+		PostData(`${baseUrl}/saveBiz`, form.getData(), function (resp) {
+			DialogHide('ReportInfoWin');
+			app.fndProjs();
+			if(1===mode)setTimeout(function(){
+				_("ProjsGrid").findRow(function(row){
+					if(row.uid == resp.data[0].uid){
+						_("ProjsGrid").select(row, 'rowclick');
+						app.lodProj(GetE(),true);
+					}
+				});
+			},300);
+			return '操作成功';
+		});
+	}
+	app.delReportInfo=function(){
+		HasSelect("ProjsGrid","请选择要 删除 的记录",function(rows){
+			Confirm("确定 删除 选中记录？", function(){
+				function done(){
+					if(rows.length>0){
+						PostData(`${baseUrl}/killBiz?uid=${rows[0].uid}`,{}, function (resp) {
+							rows.shift();
+							setTimeout(function(){done()},100);
+						},true);
+						return;
+					}
+					app.fndProjs();
+					Toast.info('操作成功');
+				}
+				done();
+			});
+		});
+	}
+	app.addOptionInfo=function(){
+		_('optionInfoGrid').addRow({"text":"选项标题","id":"选项值"});
+	}
+	app.delOptionInfo=function(){
+		HasSelect("optionInfoGrid","请选择要 编辑 的记录",function(rows){
+			_('optionInfoGrid').removeRows(rows);
+		});
+	}
+	app.impOptionInfo=function(e){
+		if(e.target.files.length<1)return;
+		with(new FileReader()){
+			onerror = function () {
+				Toast.error('加载文件失败 ' + error.code);
+			};
+			onload = function () {
+				try {
+					let sett=JSON.parse(window.base64.decode(result));
+					if(!sett.hasOwnProperty('options')||!sett.hasOwnProperty('multiSelect')||!sett.hasOwnProperty('showNullItem'))throw('错误的参数配置')
+					_('optionInfoGrid').setData(sett['options']);
+					DialogForm('optionInfoWin').setData(sett);
+				} catch (ex) {
+					Toast.error(ex);
+				} finally{
+					e.target.value='';
+				}
+			};
+			readAsText(e.target.files[0],'utf-8');
+		}
+	}
+	app.expOptionInfo=function(mode){
+		HasSelect("ArgsGrid","请选择要 编辑 的记录",function(rows){
+			let form = DialogForm('optionInfoWin');
+			form.validate();
+			if (form.isValid() == false) return;
+			var data = form.getData();
+			data['options']=WashGridRows(JSON.parse(JSON.stringify(_('optionInfoGrid').getData())));
+			export_raw(`${rows[0].name}@${new Date().format('yyyy-MM-dd#hh_mm_ss')}.json`, window.base64.encode(JSON.stringify(data,null,4)));
+		});
+	}
+	app.modOptionInfo=function(){
+		HasSelect("ArgsGrid","请选择要 编辑 的记录",function(rows){
+			setTimeout(function(){mini.parse();},100);
+			[function(){
+			},function(){
+				mini.showMessageBox({width: 400,title: "\u53c2\u6570",buttons: ["ok", "cancel"],html: `设置默认值<input id="defaultDateValueOptions" data="[{'id':0,'text':'当前日期'},{'id':1,'text':'前 n 天'},{'id':2,'text':'后 n 天'}]"  valueFromSelect="true" allowInput="false" showNullItem="true" class="mini-combobox" style="width:100%;" />`,showModal: true,callback: function (action) {if('ok'!==action)return;
+						_('ArgsGrid').updateRow(rows[0],{"defval":[function(){return `new Date(new Date().getTime()+0*60*60*1000)`;},function(){return `new Date(new Date().getTime()-${Number(prompt("天数","1"))*86400000})`;},function(){return `new Date(new Date().getTime()+${Number(prompt("天数","1"))*86400000})`;},][Number(_('defaultDateValueOptions').getValue())]()});
+					}
+				});
+			},function(){
+				mini.showMessageBox({width: 400,title: "\u53c2\u6570",buttons: ["ok", "cancel"],html: `设置默认值<input id="defaultBoolValueOptions" data="[{'id':'true','text':'true'},{'id':'false','text':'false'}]"  valueFromSelect="true" allowInput="false" showNullItem="true" class="mini-combobox" style="width:100%;" />`,showModal: true,callback: function (action) {if('ok'!==action)return;
+						_('ArgsGrid').updateRow(rows[0],{"defval":_('defaultBoolValueOptions').getValue()});
+					}
+				});
+			},function(){
+			},function(){
+				let form = DialogShow('optionInfoWin','\u7f16\u8f91\u9009\u9879','app.savOptionInfo()');
+				try {
+					let options = JSON.parse(rows[0]["options"]);
+					form.setData(options);
+					_('optionInfoGrid').setData(options['options']);
+				} catch (error) {
+				}
+			},function(){
+			},function(){
+			},function(){
+				let customerEditor;
+				setTimeout(function(){
+					customerEditor=monaco.editor.create(document.getElementById('defaultCustomerValidatorOptions'), {language: 'javascript',wrappingColumn: 0,wrappingIndent: "indent",scrollbar: {vertical: 'auto',horizontal: 'auto'},theme: "vs-dark",automaticLayout: true,readOnly: false,value: ''});
+					customerEditor.setValue(rows[0].defval.length>0? base64.decode(rows[0].defval):`\r\nfunction CustomerValidator${rows[0].name}(data){\r\n	let err='';\r\n	Object.getOwnPropertyNames(data).forEach(function(a){\r\n		console.log('参数:',a,'数值:',data[a]);\r\n	});\r\n	if(true){\r\n		err='验证不通过, 返回错误提示';\r\n	}\r\n	return err;\r\n}\r\n`);
+				},250)
+				mini.showMessageBox({width: 600,title: "\u81ea\u5b9a\u4e49\u51fd\u6570",buttons: ["ok", "cancel"],html: `<div id="defaultCustomerValidatorOptions" style="width:100%; height:250px;border:1px solid grey;"></div>`,
+					showModal: true,callback: function (action) {if('ok'!==action)return;_('ArgsGrid').updateRow(rows[0],{"defval": base64.encode(customerEditor.getValue()) });}
+				});
+			},function(){
+				setTimeout(function(){
+					window.queryComboEditor=monaco.editor.create(document.getElementById('defaultQueryComboValidatorOptions'), {language: 'sql',wrappingColumn: 0,wrappingIndent: "indent",scrollbar: {vertical: 'auto',horizontal: 'auto'},theme: "vs-dark",automaticLayout: true,readOnly: false,value: ''});
+					with(JSON.parse(rows[0].defval.length>0?rows[0].defval:`{"multiSelect":"false","showNullItem":"false","query":""}`)){
+						window.queryComboEditor.setValue(base64.decode(query));
+						_('multiSelPqc').setValue(multiSelect);
+						_('showNullPqc').setValue(showNullItem);
+					}
+				},250)
+				mini.showMessageBox({width: 600,title: "\u4e0b\u62c9\u9009\u53d6\uff08\u6765\u81ea\u67e5\u8be2\uff09",buttons: ["ok", "cancel"],html: `<div class="mini-toolbar" style="padding:2px;"><table style="width:100%;"><tr><td><a onclick="javascript:app.listBuild('prevQueryCombo',window.queryComboEditor.getValue(),_('multiSelPqc').getValue().toLowerCase()==='true',_('showNullPqc').getValue().toLowerCase()==='true' );" class="mini-button" iconCls="icon-ok" plain="true">执行</a><a onclick="javascript:app.envChoose(window.event,1);" class="mini-button" iconCls="icon-add" plain="true">环境变量</a></td><td style="white-space:nowrap;"><div id="multiSelPqc" text="允许多选" class="mini-checkbox"></div><div id="showNullPqc" text="显示空行" class="mini-checkbox"></div></td> <td style="white-space:nowrap;"><label style="font-family:Verdana;">预览：</label><input id="prevQueryCombo" _required="false" style="width:150px;" class="mini-combobox" textField="text" valueField="id" _data="" multiSelect="false" showNullItem="false" allowInput="false" /></td></tr></table></div><div id="defaultQueryComboValidatorOptions" style="width:100%; height:200px;border:1px solid grey;"></div>`,showModal: true,callback: function (action) {if('ok'!==action)return;_('ArgsGrid').updateRow(rows[0],{"defval": JSON.stringify({ multiSelect:_('multiSelPqc').getValue().toLowerCase()==='true', showNullItem:_('showNullPqc').getValue().toLowerCase()==='true', query:base64.encode(window.queryComboEditor.getValue())}) });}});
+			}][Number(rows[0].type)]();
+		});
+	}
+	app.savOptionInfo=function(mode){
+		HasSelect("ArgsGrid","请选择要 编辑 的记录",function(rows){
+			let form = DialogForm('optionInfoWin');
+			form.validate();
+			if (form.isValid() == false) return;
+			var data = form.getData();
+			data['options']=WashGridRows(JSON.parse(JSON.stringify(_('optionInfoGrid').getData())));
+			_('ArgsGrid').updateRow(rows[0],{"options":JSON.stringify(data)});
+			app.saveBiz();
+			DialogHide('optionInfoWin');
+		});
+	}
+	app.argsDel=function(e){
+		HasSelect("ArgsGrid","请选择要 删除 的记录",function(rows){
+			_('ArgsGrid').removeRows(rows);
+		});
+	}
+	app.argsAdd=function(e){
+		_('ArgsGrid').addRow({"title":`参数${1+_('ArgsGrid').data.length}标题`,"name":`参数${1+_('ArgsGrid').data.length}名称`,"type":0,"required":false,"options":``,"defval":"","width":250});
+	}
+	app.downBiz=function(e){
+		export_raw(`${_('currBiz').getValue()}@${new Date().format('yyyy-MM-dd#hh_mm_ss')}.sql`, GetEditorValue())
+	}
+	app.argsMovUp=function(e){
+		HasSelect("ArgsGrid","请选择要 移动 的记录",function(rows){
+			_('ArgsGrid').moveUp(rows);
+		});
+	}
+	app.argsMovDw=function(e){
+		HasSelect("ArgsGrid","请选择要 移动 的记录",function(rows){
+			_('ArgsGrid').moveDown(rows);
+		});
+	}
+	app.fndProjs=function(e){
+		let form=FormValid('BizsToolbar');
+		if(!form)return;
+		with(PagingGrid('ProjsGrid',e)){
+			PostData(`${baseUrl}/listBiz?page=${pageIndex}&size=${pageSize}`,form.getData(),function (resp) {
+				FillGrid(id,resp);
+			});
+		}
+	};
+	app.lodProj=function(e,conf){
+		HasSelect("ProjsGrid","请选择要 加载 的记录",function(rows){
+			!conf?Confirm(`确定 加载 选中记录？<br /><left><font color="red">警告：当前编辑的内容将被覆盖！</font></left>`, done):done();
+			function done(){
+				PostData(`${baseUrl}/readBiz?uid=${rows[0].uid}`,{}, function (resp) {
+					if(resp.data.length<1)return;
+					with(resp.data[0]){
+						_('currUid').setValue(rows[0].uid);
+						_('currBiz').setValue(name);
+						_('currDsn').setValue(dsn);
+						ClearEditorValue();
+						_('ArgsGrid').setData([]);
+						if(null!=code&&code.length>0)SetEditorValue(window.base64.decode(code));
+						if(null!=args&&args.length>0){
+							let uargs=JSON.parse(window.base64.decode(args))
+							app.envs.forEach(function(a){for(var i=0;i<uargs.length;i++)if(uargs[i].name===`__${a.envName}`)uargs.splice(i--,1);});
+							_('ArgsGrid').setData(uargs);
+						}
+						app.argsBuild();
+					}
+					if(!conf)ClickLayout('mainLayout','west');
+					FocusEditor();
+					return "操作成功"
+				});
+			}
+		});
+	}
+	app.saveBiz=function(e,callback){
+		HasSelect("ProjsGrid","请选择要 保存 的记录",function(rows){
+			PostData(`${baseUrl}/readBiz?uid=${rows[0].uid}`,{},function (resp) {
+				if(null==resp||null==resp.data||resp.data.length<1){
+					Toast.error("非法的记录编号");
+					if(callback)callback(false);
+					return;
+				}
+				var data=resp.data[0];
+				data.code=GetEditorValue();
+				let args=_('ArgsGrid').getData();
+				let nmap={};
+				let pass='';
+				args.forEach(function(a){
+					if(pass.length<1&&nmap.hasOwnProperty(a.name)){
+						pass=a.name;
+						return;
+					}
+					nmap[a.name]=a.title;
+				});
+				if(pass.length>0){
+					Toast.error(`[${pass}] 参数重名!`);
+					return;
+				}
+				app.envs.forEach(function(a){for(var i=0;i<args.length;i++)if(args[i].name===`__${a.envName}`)args.splice(i--,1);});
+				app.envs.forEach(function(a){args.push({"title":`${a.envDesc}`,"name":`__${a.envName}`,"type":0,"required":false,"options":"","defval":"","width":0})});
+				data.args=JSON.stringify(args);
+				let valid=true;
+				[{"key":"code","text":"代码不得为空"}].forEach(function(a){
+					if(valid&&data[a.key].length<1){
+						Toast.error(a.text);
+						valid=false;
+						return;
+					}
+				})
+				if(!valid){
+					if(callback)callback(false);
+					return;
+				}
+				data.code=base64.encode(data.code);
+				data.args=base64.encode(data.args);
+				PostData(`${baseUrl}/saveBiz`, data, function (resp) {
+					if(callback)callback(true);
+					return '操作成功';
+				});
+			});
+		});
+	}
+	app.argsIns=function(mode){
+		if(2===mode){
+			InsertEditorContent(`to_iso8601(${prompt('请输入字段名')} AT TIME zone 'UTC')`);
+			return;
+		}
+		HasSelect("ArgsGrid","请选择要 插入 的记录",function(rows){
+			let row=rows[0];
+			let v=`/*--${row["name"]}--*/`;
+			if(3===mode){
+				InsertEditorContent(`and (array_join(ARRAY['${v}'], '、') = '' or ${prompt('请输入字段名')} in ('${v}')) `);
+				return;
+			}
+			with({v:v,t:`'${v}'`,i:parseInt(row["type"].toString())}){
+				with({f:[t,t,v,v,t][i],k:function(f){return `and (${prompt('请输入字段名')} = ${f})`;},e:function(f){return `and (${prompt('请输入字段名')} = ${f} or ${f} = '')`;}}){
+					InsertEditorContent(1==mode?[e,e,k,k,e][i](f):f);
+				}
+			}
+		});
+	}
+	app.listBuild=function(id,query,multiSel,showNull){
+		function genData(){
+			let data={};
+			app.envs.forEach(function(a){data[`__${a.envName}`]=a.envValue;});
+			return base64.encode(JSON.stringify([data]));
+		}
+		PostData(`${baseUrl}/execRaw?page=0&size=100`,{"dsn":`${_('currDsn').getValue()}`,query:genData(),code:query},function (resp){
+			let data=[];
+			if(resp.data&&resp.data.length>0)
+			resp.data.forEach(function(a){
+				let b=Object.getOwnPropertyNames(a).shift();
+				data.push({'id':a[b],'text':a[b]});
+			});
+			_(id).setData(data);
+			_(id).setMultiSelect (multiSel||false);
+			_(id).setShowNullItem(showNull||false);
+		});
+	}
+	app.argsBuild=function(uid,args,target){
+		if(!_)return;
+		with(_('tabsArgs')){
+			activeTab(getTab(1));
+		}
+		$(`#${target||'prevForm'}`).html(`
+		<table id="QueryForm">${(args||_('ArgsGrid').getData()).map( (a,b,c) => `
+			<tr>
+				<td ${0!=b?'':'class="form-label" style="width:120px;"'}>
+					${[7,6].includes(Number(a.type))?``:`<label>${a.title}：<span style="color:red">${a.required.length>0?'*':''}</span></label>`}
+					</td>
+				<td ${0!=b?'':'style="width:160px;"'}>
+					${ (function() {with(a){return [
+						function(){ return `<input name="${name}" id="QueryForm${name}" value="${defval}" required="${required}" style="width:${width}px;" class="mini-textbox" emptyText="请填写" onenter="app.execBiz()" />`;},
+						function(){ return `<input name="${name}" id="QueryForm${name}" value="${defval}" required="${required}" style="width:${width}px;" class="mini-datepicker" _valueType="string" format="yyyy-MM-dd" _maxdate="javascript:new Date();" emptytext="选择日期" />`;},// 2018-07-16T08:30:00.000Z //if(-1!=val.indexOf("T")&&-1!=val.indexOf("Z")&&val.endsWith("Z")){
+						function(){ return `<div   name="${name}" id="QueryForm${name}" value="${defval}" 												 class="mini-checkbox" text=""></div>`;},
+						function(){ return `<input name="${name}" id="QueryForm${name}" value="${defval}" required="${required}" style="width:${width}px;" class="mini-spinner"  maxValue="9999999999" minValue="1" allowNull="${!required}" />`;},
+						function(){ with(JSON.parse(a.options.length>0?a.options:`{"multiSelect":"false","showNullItem":"false","options":[]}`)){
+									return `<input name="${name}" id="QueryForm${name}" value="${defval}" required="${required}" style="width:${width}px;" class="mini-combobox" textField="text" valueField="id" data="${eval(JSON.stringify(JSON.stringify(options)).replaceAll("\"","'"))}" multiSelect="${multiSelect}" showNullItem="${showNullItem}" allowInput="false" />`;}},
+						function(){ return `<input name="${name}" id="QueryForm${name}" value="${defval}" required="${required}" style="width:${width}px;" class="mini-textarea" emptyText="请填写, 以“,”进行分割" onvalidation="app.parseCodes('QueryForm${name}')" />`;},
+						function(){ return `<input name="${name}" id="QueryForm${name}" value=""          data-options="{Validator:'app.ValidatorLeastHasOne'}" _required=""           style="width:${width}px;" class="mini-hidden" />`;},
+						function(){ return `<input name="${name}" id="QueryForm${name}" value="${defval}" data-options="{Validator:'CustomerValidator${name}'}" _required=""           style="width:${width}px;" class="mini-hidden" />`;},
+						function(){ with(JSON.parse(defval.length>0?defval:`{"multiSelect":"false","showNullItem":"false","query":""}`)){app.listBuild(`QueryForm${name}`,base64.decode(query),multiSelect,showNullItem);
+									return `<input name="${name}" id="QueryForm${name}" _value="${defval}" required="${required}" style="width:${width}px;" class="mini-combobox" textField="text" valueField="id" _data="" multiSelect="${multiSelect}" showNullItem="${showNullItem}" allowInput="false" />`;}},
+						][type]()}}).call(this)}</td>
+			</tr>`).join('')}
+			<tr>
+				<td>
+					</td>
+				<td>
+					<input class="mini-hidden" name="uid" value="${uid||_('currUid').getValue()}" />
+					<a onclick="app.execBiz()" _iconCls="icon-add"  plain="false" id=""	_enabled="false"	class="mini-button mini-button-primary">查询</a>
+					<a onclick="app.expoBiz()" _iconCls="icon-edit" plain="false" id=""	_enabled="false" 	class="mini-button 					  ">导出</a>
+					</td>
+			</tr>
+		</table>`);
+		mini.parse();
+	}
+	app.expoBiz=function(e){
+		app.execBiz(e,true);
+	}
+	app.execBiz=function(e,exportData){
+		if(_('currUid').getValue()){
+			if(e)e.cancel = true;
+			let _e=!e?undefined:{data:JSON.parse(JSON.stringify(e.data))};
+			app.saveBiz(GetE(),function(pass){if(pass)done('prevGrid',_e);});
+			return;
+		}
+		done('resultGrid',e);
+		function done(result,ee){
+			let form=FormValid(`QueryForm`);
+			if(!form)return;
+			let data = form.getData();
+			let tdata={};
+			form.getFields().forEach(function(a,b,c){
+				tdata[a.name]=({"spinner":function(v){return Number(v);},
+								"checkbox":function(v){return "true"===v.toLowerCase();},
+								"textbox":function(v){return v;},
+								"textarea":function(v){return v;},
+								"combobox":function(v){return v;},
+								"datepicker":function(v){return v;},
+								"hidden":function(v){},
+				})[a.type](data[a.name]);
+				if('hidden'===a.type)delete tdata[a.name];
+			});
+			let valid='';
+			form.getFields().forEach(function(a,b,c){
+				if('hidden'===a.type)
+					if(a.hasOwnProperty('Validator')){
+						if(a.value.length>0)eval(base64.decode(a.value))
+						valid=eval(`${a['Validator']}(tdata)`);
+					}
+			});
+			if(valid.length>0){
+				Toast.error(valid);
+				return;
+			}
+			data = form.getData();
+			function splitStr2jsonArray(target,separator){
+				var out=[];
+				if((target||'').length>0)(target||'').split(separator).forEach(function(a,b){if(null!=a&&a.length>0)out.push(a);});
+				
+				return out.length>0?`${out.join(`,`)}`:'';
+			}
+			Object.getOwnPropertyNames(data).forEach(function(c){
+				try{if("combobox"===_(`QueryForm${c}`).type)data[c]=splitStr2jsonArray(data[c],',');}catch(ex){}
+				try{if("textarea"===_(`QueryForm${c}`).type)data[c]=splitStr2jsonArray(data[c],'\r\n');}catch(ex){}
+			});
+			data={"uid":data["uid"],"query":data};
+			if(data["query"].hasOwnProperty("uid"))delete data["query"].uid;
+			app.envs.forEach(function(a){data["query"][`__${a.envName}`]=a.envValue;});
+			with(PagingGrid(result,ee)){
+				if(!exportData)ClearGrid(id);
+				if(exportData){
+					mini.mask({el: document.body,cls: 'mini-mask-loading',html: '\u64cd\u4f5c\u4e2d\u002e\u002e\u002e'});
+					DoPostBlob(`${baseUrl}/execBiz?export=true&rnd=${new Date().getTime()}`,data,`${!ParseQueryString("uid")?_('currBiz').value:_('prodReport').title}@${new Date().format(`yyyy-MM-dd#hh_mm_ss`)}`,'.xlsx',function(){mini.unmask(document.body);});
+					return;
+				}
+				if(!ParseQueryString("uid"))$('#pcode').text("");
+				let ticks=new Date();
+				PostData(`${baseUrl}/execBiz?page=${pageIndex}&size=${pageSize}`,data,function (resp) {
+					if(!ParseQueryString("uid")){
+						$('#pcode').text(`--result:${!resp?0:(resp.data||[]).length} records, elapsed:${new Date()-ticks}ms\n${sqlFormatter.format(resp.message ,{language:"sql",indent:"\t"})}`);
+						document.querySelectorAll('pre code').forEach((block) => {
+							hljs.highlightBlock(block);
+						});
+						if(!_('workspaceLayout').isExpandRegion('south'))ClickLayout('workspaceLayout','south');
+					}
+					if(null==resp.data||resp.data.length<1)return;
+					let cols=GenGridColumn(resp.data[0],function(t,i,c){
+						if(-1!=t.indexOf("@")){
+							let parts = t.split("@");
+							c.title=parts[0];
+							c.order=Number(parts[1]);
+						}
+						return c;
+					})
+					var sorted=[];
+					for(var i=0;i<cols.length;i++)for(var j=0;j<cols.length;j++)if(cols[j].hasOwnProperty("order"))if(cols[j].order===i){
+						sorted.push(cols[j]);
+						break;
+					}
+					for(var i=0;i<cols.length;i++)for(var j=0;j<cols.length;j++)if(!cols[j].hasOwnProperty("order")){
+						sorted.push(cols[j]);
+						break;
+					}
+					cols=sorted;
+					cols.unshift({field:"rowIndex", 	header: "序号",	allowSort: true, 	width: 80, 	align: 'center', 	headerAlign: 'center', 	});
+					cols.unshift({type: 'checkcolumn',	width: 80,});
+					_(id).setColumns(cols);
+					for(var i=0;i<resp.data.length;i++)resp.data[i]['rowIndex']=1+i+resp.size*resp.page;// 修复手动分页导致的序号错误
+					FillGrid(id,resp)
+					PersonalizedLayout(`UniversalReport_${data["uid"]}_zhangxx`,id);
+				});
+			}
+		}
+	} 
+	app.init=function(e){
+		var apiUrl = ("localhost"===window.location.hostname)?"//192.168.25.106:9090":"//ilab.ponytest.com";
+		PostData(`${apiUrl}/auth/user/myInfo`,{},function(resp){if(resp&&resp.data&&resp.data.length>0){let description={"siteId":"组织id","siteName":"组织名称","siteAreaName":"组织区域","employeeId":"员工id","employeeCode":"员工编号","employeeName":"员工姓名","employeeEasDeptName":"员工部门","account":"账号","name":"用户名称","siteCode":"组织编号","siteInnerCode":"组织内码","employeeEasDeptCode":"员工所属部门编号"};
+			let datas=[];
+			let data=resp.data[0];//{"id":1762,"siteId":1,"siteCode":"01","siteInnerCode":"1001_01","siteName":"谱尼测试集团股份有限公司","siteAreaName":"北京","deptUserId":0,"employeeId":"5rQAAAEhoxaA733t","employeeCode":"102323","employeeName":"张潇潇","employeeEasDeptCode":"01.03.01","employeeEasDeptName":"资讯部","account":"zhangxiaoxiao","name":"张潇潇","email":null,"tel":null}
+			Object.getOwnPropertyNames(data).forEach(function(a){
+				if(!Object.getOwnPropertyNames(description).includes(a))return false;
+				datas.push({"envName":a,"envValue":data[a],"envDesc":description[a]});
+			});
+			app.envs=datas;
+			let uid=ParseQueryString("uid");
+			if(uid){
+				$("#prodReport > div > div.mini-panel-header").click(function () {setTimeout(function(){mini.layout();},200);});
+				PostData(`${baseUrl}/readBiz?uid=${uid}`,{},function (resp) {
+					if(resp.data.length<1)return;
+					with(resp.data[0]){
+						_('prodReport').set({"title":name});
+						let uargs=JSON.parse(window.base64.decode(args));
+						app.envs.forEach(function(a){for(var i=0;i<uargs.length;i++)if(uargs[i].name===`__${a.envName}`)uargs.splice(i--,1);});
+						app.argsBuild(uid,uargs,'prodQuery')
+					}
+				});
+				return;
+			}
+			$('#prodForm').hide();$('#mainLayout').show();
+			MapKeyEditor(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_R, app.execBiz);
+			MapKeyEditor(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S, app.saveBiz);
+			ClickLayout('mainLayout','west');
+			app.fndProjs();
+			PostData(`${baseUrl}/listDsn`,{},function (resp) {
+				var dsns=[];
+				resp.data.forEach(function(a,b,c){dsns.push(a);});
+				dsns.sort(function(a,b){
+					return a.id>b.id;
+				});
+				let items=[];
+				JSON.parse(JSON.stringify(dsns)).forEach(function(a,b,c){
+					if(0==b)dsns=[];
+					dsns.push(a["text"]);
+					items.push({"text":a["text"],"id":a["id"]});
+				});
+				app.Dsns=dsns;
+				_("dsn").setData(items);
+				_("currDsn").setData(items);
+			});
+		}});
+	}
+	//////////////////////////////////////////////////////////
+	app.onChineseValidation=function (e) {
+		if (e.isValid) {
+			function isEnglish(v) {
+				var re = new RegExp("^[a-zA-Z\_]+$");
+				if (re.test(v)) return true;
+				return false;
+			}
+			function isChinese(v) {
+				var re = new RegExp("^[\u4e00-\u9fa5]+$");
+				if (re.test(v)) return true;
+				return false;
+			}
+			function isChineseAndEnglish(v) {
+				var re = new RegExp("^[\u4e00-\u9fa5a-zA-Z\_]+$");
+				if (re.test(v)) return true;
+				return false;
+			}
+			//if (isChinese(e.value) == false && isEnglish(e.value) == false) {
+			if (isChineseAndEnglish(e.value) == false) {
+				e.errorText = "必须输入中文或英文";
+				e.isValid = false;
+			}
+		}
+	}
+	app.parseCodes=function(id){
+		var lists=_(id).getValue();
+		var items=[];
+		var item='';
+		for(var i=0;i<lists.length;i++){
+			if(!'0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.includes(lists[i])){
+				if(''!==item)items.push(item);
+				item='';
+				continue;
+			}
+			item+=lists[i];
+		}
+		items.push(item);
+		_(id).setValue(items.join('\r\n'));
+	}
+	app.ValidatorLeastHasOne=function(data){
+		var valid=false;
+		Object.getOwnPropertyNames(data).forEach(function(a){
+			if("string"===typeof(data[a])){
+				if(data[a].length>0)valid=true;
+			}else if("number"===typeof(data[a])){
+			}else if("boolean"===typeof(data[a])){
+			}else if(null !=data[a] && data[a] instanceof Date){
+				valid=true;
+			}else{
+				console.log(a,data[a],typeof(data[a]),data[a] instanceof Date );
+			}
+		});
+		return !valid?'至少填写一项检索条件!':'';
+	}
+}});
+</script>
+<script type="text/javascript">
+/**
+* @author      zhangxx<20437023@qq.com>
+* @version     1.0
+* @since       1.0
+* Date         2019-09-18
+* Time         16:39:20
+*/
+var app = new Vue({
+	methods: {
+	},
+	mounted: function () {
+	},
+	data:{
+		//baseUrl:``,
+	},
+	el: '#app'
+});
+</script>
+</body>
+</html>

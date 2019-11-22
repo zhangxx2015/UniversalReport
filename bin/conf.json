@@ -1,0 +1,43 @@
+﻿[{
+	"Driver"  	:"presto",
+	"Username" 	:"user",
+	"Password" 	:"test",
+	"Server"   	:"192.168.25.99:10010",
+	"Database" 	:"ilab",
+	"Test"		:"select billing_street as \"大厦街道\" from crm.turbocrm.tc_account WHERE crm.turbocrm.tc_account.billing_street IS NOT NULL limit 10"
+},{
+	"Driver"   	:"mysql",
+	"Username" 	:"lims",
+	"Password" 	:"EegaSgHp9g54LnDJ",
+	"Server"   	:"192.168.25.11:3306",
+	"Database" 	:"lims",
+	"Test"		:"select eas_org,area,id,inner_code,name from org_site"
+},{
+	"Driver"   	:"mssql",
+	"Username" 	:"csj",
+	"Password" 	:"csj82618116",
+	"Server"   	:"192.168.25.15:1433",
+	"Database" 	:"LittleSystem_DEV",
+	"Test"		:"SELECT top 10 name,easDeptName,easOrgName FROM ilabUsers"
+},{
+	"Driver"   	:"sqlite3",
+	"Username" 	:"",
+	"Password" 	:"",
+	"Server"   	:"",
+	"Database" 	:"./mydb.db3",
+	"Test"		:"SELECT name,account,job,age,phone FROM users"
+},{
+	"Driver"   	:"goracle",
+	"Username" 	:"ilab",
+	"Password" 	:"ilab",
+	"Server"   	:"10.10.0.70:1521",
+	"Database" 	:"oradb",
+	"Test"		:"select sysdate from dual"
+},{
+	"Driver"   	:"goracle",
+	"Username" 	:"lims_user",
+	"Password" 	:"ZD3UbTBosGGH5Sd",
+	"Server"   	:"10.10.0.4:1521",
+	"Database" 	:"orcl",
+	"Test"		:"select sysdate from dual"
+}]

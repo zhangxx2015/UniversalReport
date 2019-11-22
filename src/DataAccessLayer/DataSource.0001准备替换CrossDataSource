@@ -1,0 +1,135 @@
+package DataSource
+
+import (
+	"database/sql"
+	"fmt"
+	"strconv"
+	"time"
+
+	_ "github.com/denisenkom/go-mssqldb"
+	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/mattn/go-sqlite3"
+
+	//_ "github.com/prestodb/presto-go-client/presto"
+	_ "github.com/xo/usql/drivers/presto" // presto://lims:@192.168.25.99:10010/ilab
+
+	//_ "github.com/mattn/go-oci8"
+	_ "github.com/bmizerany/pq"
+)
+
+type Object map[string]interface{}
+
+// func DSN(USERNAME, PASSWORD, NETWORK, SERVER, PORT, db string) string {
+// 	return fmt.Sprintf("%s:%s@%s(%s:%d)/%s", USERNAME, PASSWORD, NETWORK, SERVER, PORT, db)
+// }
+
+//func GetDB(DRIVER string, dsn string) *sql.DB {
+func GetDB(DRIVER string, USERNAME string, PASSWORD string, NETWORK string, SERVER string, INST string, PORT int, db string) *sql.DB {
+	dsn := ""
+	switch DRIVER {
+	case "presto":
+		//http[s]://user[:pass]@host[:port][?parameters]
+		dsn = fmt.Sprintf("http://%s:%s@%s:%d?catalog=default&schema=%s", USERNAME, PASSWORD, SERVER, PORT, db) //dsn = "http://user@localhost:8080?catalog=default&schema=test"
+		break
+	case "mysql":
+		dsn = fmt.Sprintf("%s:%s@%s(%s:%d)/%s", USERNAME, PASSWORD, NETWORK, SERVER, PORT, db)
+		break
+	case "mssql":
+		dsn = fmt.Sprintf("server=%s;user id=%s;password=%s;port=%d", SERVER, USERNAME, PASSWORD, PORT)
+		break
+	case "oci8":
+		dsn = fmt.Sprintf("%s/%s@%s:%d/sid", USERNAME, PASSWORD, SERVER, PORT, INST) //"system/123456@127.0.0.1:1521/ORCL"
+		break
+	case "postgres":
+		dsn = fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable", USERNAME, PASSWORD, db)
+		break
+	case "sqlite3":
+		dsn = SERVER
+		break
+	}
+
+	DB, err := sql.Open(DRIVER, dsn)
+	if err != nil {
+		panic(fmt.Sprintf("Open mysql failed,err:%v\n", err))
+	}
+	DB.SetConnMaxLifetime(100 * time.Second) //最大连接周期，超过时间的连接就close
+	DB.SetMaxOpenConns(100)                  //设置最大连接数
+	DB.SetMaxIdleConns(16)                   //设置闲置连接数
+	return DB
+}
+
+func DBRowsConv(rows *sql.Rows) []Object {
+	results := make([]Object, 0)
+	types, _ := rows.ColumnTypes()
+	columns, _ := rows.Columns()
+	colPtr := make([]interface{}, len(columns))
+	colVal := make([]interface{}, len(columns))
+	colTyp := make([]string, len(columns))
+	for i := range colVal {
+		colPtr[i] = &colVal[i]
+		colTyp[i] = types[i].DatabaseTypeName()
+	}
+	for rows.Next() {
+		err := rows.Scan(colPtr...)
+		if err != nil {
+			panic(err)
+		}
+		record := make(Object)
+		for i, col := range colVal {
+			if col == nil {
+				continue
+			}
+			// name string
+
+			// hasNullable       bool
+			// hasLength         bool
+			// hasPrecisionScale bool
+
+			// nullable     bool
+			// length       int64
+			// databaseType string
+			// precision    int64
+			// scale        int64
+			// scanType     reflect.Type
+
+			//fmt.Println(colType[i].Name(), colType[i].DatabaseTypeName())
+			strval := string(col.([]byte))
+			//dtype := colType[i].DatabaseTypeName()
+			switch colTyp[i] {
+			case "INT":
+				intVal, _ := strconv.Atoi(strval)
+				record[columns[i]] = intVal
+				break
+			case "VARCHAR":
+				record[columns[i]] = strval
+				break
+			case "BIT":
+				boolVal := "\x01" == strval
+				record[columns[i]] = boolVal
+				break
+			case "BIGINT":
+				longVal, _ := strconv.ParseUint(strval, 10, 64)
+				record[columns[i]] = longVal
+				break
+			case "CHAR":
+				record[columns[i]] = strval
+				break
+			case "TIMESTAMP":
+				record[columns[i]] = strval
+				break
+			case "DATETIME":
+				record[columns[i]] = strval
+				break
+			case "TEXT":
+				record[columns[i]] = strval
+				break
+			default:
+				panic(fmt.Sprintf("[zhangxx]UNKNOW Database Type:%s", colTyp[i]))
+			}
+		}
+		//return results
+		results = append(results, record)
+	}
+	rows.Close()
+	return results
+}
