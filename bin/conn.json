@@ -1,9 +1,0 @@
-[{
- "Driver"    :"mysql",
- "Username"  :"ilab_report",
- "Password"  :"Q3Pzx6Q9XvKXxGZy",
- "Server"    :"192.168.25.11:3306",
- "Database"  :"ilab-report",
- "Test"  :"CREATE TABLE IF NOT EXISTS bizs(uid      INTEGER       PRIMARY KEY AUTO_INCREMENT,cts   timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,dsn   INT     NULL,name     VARCHAR(32)   NULL,memo     VARCHAR(255)  NULL,args     TEXT  NULL,code     TEXT NULL,CONSTRAINT users_uid_uindex UNIQUE (uid),CONSTRAINT users_name_uindex UNIQUE (name));",
- "Debug"  :true
-}]
